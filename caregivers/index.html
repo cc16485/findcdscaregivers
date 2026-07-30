@@ -195,6 +195,57 @@
       </div>
     </div>
 
+    <div class="card" style="border:2px solid var(--teal)">
+      <div class="card-title"><span style="color:var(--teal-deep)">Most important question</span></div>
+      <p class="card-hint">Many people come to us because there is already someone they look after, or want to.
+        If that is you, say so here. It changes what happens next and it usually means we can move much faster.</p>
+
+      <div class="form-group" style="margin-bottom:4px">
+        <label>Do you already have someone you would be caring for? <span class="req">*</span></label>
+        <div class="chips" style="margin-top:6px">
+          <label class="chip"><input type="radio" name="hasconsumer" value="Yes" id="hc_yes"><span>Yes, I have someone</span></label>
+          <label class="chip"><input type="radio" name="hasconsumer" value="No" id="hc_no"><span>No, I am looking for work</span></label>
+          <label class="chip"><input type="radio" name="hasconsumer" value="Not sure" id="hc_maybe"><span>Not sure yet</span></label>
+        </div>
+      </div>
+
+      <div id="consumerDetail" style="display:none; margin-top:20px; padding-top:18px; border-top:1px solid var(--gray-200)">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="consumer_name">Their name</label>
+            <input type="text" id="consumer_name" placeholder="Who would you be caring for?">
+          </div>
+          <div class="form-group">
+            <label for="consumer_rel">They are your…</label>
+            <select id="consumer_rel">
+              <option value="">Choose one</option>
+              <option>Parent</option>
+              <option>Grandparent</option>
+              <option>Adult child</option>
+              <option>Brother or sister</option>
+              <option>Other relative</option>
+              <option>Friend</option>
+              <option>Neighbor</option>
+              <option>No relation</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="consumer_mcaid">Do they have Missouri Medicaid?</label>
+          <select id="consumer_mcaid">
+            <option value="">Choose one</option>
+            <option>Yes, active Medicaid</option>
+            <option>Not sure</option>
+            <option>No</option>
+          </select>
+        </div>
+        <p style="font-size:12px;color:var(--gray-600);line-height:1.55;margin:10px 0 0">
+          You cannot be paid to care for your husband or wife, or for someone whose legal guardian you are.
+          That is a state rule. Everyone else is fine.
+        </p>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-title">Where you can work</div>
       <p class="card-hint">Tap every county you would be willing to work in. Most people pick the one they live in plus any they already drive to.</p>
@@ -285,12 +336,6 @@
 
     <div class="card">
       <div class="card-title">A few last questions</div>
-      <div class="form-row single">
-        <div class="form-group">
-          <label for="knows_consumer">Is there a consumer you already know you would like to work for?</label>
-          <input type="text" id="knows_consumer" placeholder="Optional. Their name, if so.">
-        </div>
-      </div>
       <div class="form-row single">
         <div class="form-group">
           <label for="how_heard">How did you hear about us?</label>
@@ -419,6 +464,14 @@ phoneEl.addEventListener('input', () => {
                 : d.length > 0 ? `(${d}` : '';
 });
 
+// Show the follow-up questions only when there is actually someone to ask about.
+document.querySelectorAll('input[name="hasconsumer"]').forEach(r => {
+  r.addEventListener('change', () => {
+    document.getElementById('consumerDetail').style.display =
+      (r.value === 'Yes' && r.checked) ? 'block' : 'none';
+  });
+});
+
 // ── Submit ──────────────────────────────────────────────────────────────────
 const form      = document.getElementById('poolForm');
 const errBox    = document.getElementById('formError');
@@ -443,6 +496,7 @@ form.addEventListener('submit', async (e) => {
   if (digits.length !== 10) { problems.push('a 10-digit phone number'); document.getElementById('g_phone').classList.add('invalid'); }
   const counties = checkedValues('county');
   if (counties.length === 0) problems.push('at least one county');
+  if (!radioValue('hasconsumer')) problems.push('whether you already have someone to care for');
   if (!document.getElementById('background_ok').checked) {
     problems.push('the background screening checkbox');
     document.getElementById('g_bg').classList.add('invalid');
@@ -478,7 +532,10 @@ form.addEventListener('submit', async (e) => {
     cert_cna:           document.getElementById('cert_cna').checked,
     cert_other:         val('cert_other'),
     worked_here_before: document.getElementById('worked_before').checked,
-    knows_consumer:     val('knows_consumer'),
+    has_potential_consumer: radioValue('hasconsumer'),
+    knows_consumer:         val('consumer_name'),
+    consumer_relationship:  val('consumer_rel'),
+    consumer_has_medicaid:  val('consumer_mcaid'),
     background_ok:      true,
     show_anonymously:   document.getElementById('show_anon').checked,
     how_heard:          val('how_heard'),
@@ -490,11 +547,18 @@ form.addEventListener('submit', async (e) => {
   // show_anonymously is a newer column. If the database has not been migrated
   // yet, drop that one field and save the person anyway — losing a real signup
   // over a consent flag would be far worse than losing the flag.
-  let { error } = await _db.from('attendant_pool').insert(row);
-  if (error && error.code === 'PGRST204' && 'show_anonymously' in row) {
-    const { show_anonymously, ...withoutFlag } = row;
-    console.warn('attendant_pool.show_anonymously missing; saving without it');
-    ({ error } = await _db.from('attendant_pool').insert(withoutFlag));
+  let payload = { ...row };
+  let error;
+  // Drop any column the database does not have yet, then retry. Losing a real
+  // caregiver because a migration has not been run would be far worse than
+  // losing one answer. Bounded so it can never loop forever.
+  for (let attempt = 0; attempt < 6; attempt++) {
+    ({ error } = await _db.from('attendant_pool').insert(payload));
+    if (!error || error.code !== 'PGRST204') break;
+    const missing = (error.message.match(/'([^']+)' column/) || [])[1];
+    if (!missing || !(missing in payload)) break;
+    console.warn('attendant_pool.' + missing + ' missing; saving without it');
+    delete payload[missing];
   }
 
   if (error) {
