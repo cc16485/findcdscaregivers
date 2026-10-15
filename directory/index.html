@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Private Caregiver Directory | Caring Companions CDS</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#0e3860">
+<link rel="icon" href="../assets/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/match/match.css">
+</head>
+<body style="background:#fbfaf7">
+<div id="app"><noscript><p style="padding:24px;font-family:Poppins,sans-serif">Please call Caring Companions CDS at <a href="tel:+14172182888">417-218-2888</a>.</p></noscript></div>
+<script type="module">
+import { mountFamily } from '../assets/match/family-app.js';
+const u = new URLSearchParams(location.search);
+mountFamily(document.getElementById('app'), { invite: u.get('i') || '', assetBase: '../' });
+</script>
+</body>
+</html>
