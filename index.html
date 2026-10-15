@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Find a CDS Caregiver in Missouri | Free Matching by Caring Companions</title>
-<meta name="description" content="Need a caregiver for Missouri's CDS program and don't have anyone in mind? We match families with screened caregivers across 27 Southwest Missouri counties. Free. Caregivers earn $15.00 an hour, paid every Thursday.">
+<title>Find a CDS Caregiver in Southwest Missouri | Caring Companions CDS</title>
+<meta name="description" content="Discover potential caregivers, watch introduction videos, and meet someone before deciding whether Missouri's CDS program is right for you. Free to look, no obligation, you choose who to hire.">
 <link rel="canonical" href="https://findcdscaregivers.com/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://findcdscaregivers.com/">
-<meta property="og:title" content="Find a CDS Caregiver in Missouri">
-<meta property="og:description" content="No one in mind to care for you? We match families with screened caregivers across 27 Southwest Missouri counties. Free.">
+<meta property="og:title" content="Find a caregiver. Find your fit.">
+<meta property="og:description" content="Meet potential CDS caregivers before you decide. Free to look, no obligation, you choose who to hire.">
 <meta property="og:image" content="https://findcdscaregivers.com/assets/logo.png">
 <meta name="theme-color" content="#0e3860">
 <link rel="icon" href="assets/icon-192.png">
@@ -18,12 +18,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/match/match.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Service",
-  "name": "CDS Caregiver Matching",
-  "serviceType": "Caregiver matching for Missouri Consumer Directed Services",
+  "name": "Private CDS Caregiver Network",
+  "serviceType": "Caregiver introductions for Missouri Consumer Directed Services",
   "url": "https://findcdscaregivers.com/",
   "areaServed": "Southwest Missouri",
   "provider": {
@@ -34,302 +35,12 @@
   }
 }
 </script>
-<style>
-  /* This is a sister service, not a second company: same palette, but the
-     wordmark and hero belong to the matching service so it can stand alone. */
-  .svc-brand{display:flex; align-items:center; gap:12px; text-decoration:none}
-  .svc-mark{width:42px; height:42px; flex:none; border-radius:11px; background:var(--teal);
-    display:flex; align-items:center; justify-content:center; color:var(--navy-deep)}
-  .svc-mark .icon{width:24px; height:24px; stroke-width:2.1}
-  .svc-name{line-height:1.15}
-  .svc-name strong{display:block; font-size:1.06rem; font-weight:800; color:var(--navy); letter-spacing:-.02em}
-  .svc-name span{display:block; font-size:.72rem; color:var(--ink-soft); font-weight:500}
-
-  .byline{display:inline-flex; align-items:center; gap:9px; background:var(--card);
-    border:1px solid var(--line); border-radius:99px; padding:7px 15px 7px 9px; text-decoration:none}
-  .byline img{height:26px; width:auto}
-  .byline span{font-size:.8rem; color:var(--ink-soft); font-weight:600}
-
-  .split{display:grid; gap:16px; margin-top:2.4rem}
-  @media (min-width:760px){ .split{grid-template-columns:1fr 1fr; gap:20px} }
-  .lane{background:var(--card); border:2px solid var(--line); border-radius:18px; padding:26px;
-    display:flex; flex-direction:column; box-shadow:var(--shadow)}
-  .lane.hot{border-color:var(--teal)}
-  .lane .lmark{width:52px; height:52px; border-radius:14px; display:flex; align-items:center;
-    justify-content:center; margin-bottom:1.1rem}
-  .lane.hot .lmark{background:var(--teal-pale); color:var(--teal-deep)}
-  .lane.cool .lmark{background:#eef2f7; color:var(--navy-soft)}
-  .lane .lmark .icon{width:27px; height:27px; stroke-width:2}
-  .lane h2{font-size:1.4rem; margin-bottom:.5rem}
-  .lane p{color:var(--ink-soft); flex:1}
-  .lane .go{margin-top:1.2rem}
-
-  .supply{background:var(--card); border:2px solid var(--teal); border-radius:18px;
-    padding:clamp(20px,4vw,28px); box-shadow:var(--shadow)}
-  .supply .headline{font-size:clamp(1.3rem,3.4vw,1.7rem); font-weight:800; color:var(--navy);
-    letter-spacing:-.02em; margin-bottom:.4rem}
-  .supply .cgrid{display:grid; gap:8px; margin-top:1.2rem;
-    grid-template-columns:repeat(auto-fill,minmax(132px,1fr))}
-  .supply .cty{display:flex; justify-content:space-between; gap:8px; align-items:center;
-    background:var(--paper); border:1px solid var(--line); border-radius:9px; padding:9px 12px; font-size:.9rem}
-  .supply .cty b{font-variant-numeric:tabular-nums; color:var(--teal-deep)}
-  .supply .empty{color:var(--ink-soft); font-size:.95rem}
-</style>
 </head>
 <body>
-
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></symbol>
-  <symbol id="i-check" viewBox="0 0 24 24"><path d="m20 6-11 11-5-5"/></symbol>
-  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.8 5.6a5 5 0 0 0-7.1 0L12 7.3l-1.7-1.7a5 5 0 1 0-7.1 7.1l8.8 8.8 8.8-8.8a5 5 0 0 0 0-7.1Z"/></symbol>
-  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V21H3Z"/><path d="M9.5 21v-6h5v6"/></symbol>
-  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 11h18"/></symbol>
-  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-3.6 8-10V5l-8-3-8 3v7c0 6.4 8 10 8 10Z"/></symbol>
-  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/></symbol>
-  <symbol id="i-hand" viewBox="0 0 24 24"><path d="M11 13V4.5a1.5 1.5 0 0 1 3 0V12"/><path d="M14 12V3.5a1.5 1.5 0 0 1 3 0V12"/><path d="M17 12v-1.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-2a7 7 0 0 1-7-7v-3a1.5 1.5 0 0 1 3 0"/></symbol>
-  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></symbol>
-  <symbol id="i-map" viewBox="0 0 24 24"><path d="M12 21s7-5.7 7-11a7 7 0 1 0-14 0c0 5.3 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/></symbol>
-</svg>
-
-<div class="callbar">Talk to a person: <a href="tel:+14172182888">417-218-2888</a> &nbsp;·&nbsp; toll free <a href="tel:+18668635151">866-863-5151</a></div>
-
-<header>
-  <div class="wrap navrow">
-    <a class="svc-brand" href="./" aria-label="Find CDS Caregivers, home">
-      <span class="svc-mark"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg></span>
-      <span class="svc-name">
-        <strong>Find CDS Caregivers</strong>
-        <span>Missouri Consumer Directed Services</span>
-      </span>
-    </a>
-    <nav aria-label="Main">
-      <ul>
-        <li><a href="families/">I need a caregiver</a></li>
-        <li><a href="caregivers/">I want caregiving work</a></li>
-        <li><a href="https://caringcds.com/">Caring Companions</a></li>
-      </ul>
-    </nav>
-    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="drawer">
-      <svg class="icon" aria-hidden="true"><use href="#i-users"/></svg> Menu
-    </button>
-  </div>
-  <div class="drawer" id="drawer">
-    <ul>
-      <li><a href="families/">I need a caregiver</a></li>
-      <li><a href="caregivers/">I want caregiving work</a></li>
-      <li><a href="https://caringcds.com/">Caring Companions</a></li>
-    </ul>
-  </div>
-</header>
-
-<main>
-
-<section class="hero">
-  <div class="wrap">
-    <p class="kicker">Southwest Missouri</p>
-    <h1>Nobody in mind to care for you? We find someone.</h1>
-    <p class="lede">
-      Missouri's Consumer Directed Services program lets you hire your own caregiver and Medicaid pays them.
-      That is wonderful if you already have a daughter, a neighbor, a friend. If you do not, most agencies
-      simply cannot help you. We can. Finding you a caregiver is what this service does, and it costs you nothing.
-    </p>
-    <div class="hero-actions">
-      <a class="btn btn-call" href="tel:+14172182888"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg> Call 417-218-2888</a>
-      <a class="btn btn-ghost" href="families/">Ask us to find someone</a>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="split">
-      <a class="lane hot" href="families/">
-        <span class="lmark"><svg class="icon" aria-hidden="true"><use href="#i-home"/></svg></span>
-        <h2>I need a caregiver</h2>
-        <p>You have Medicaid, or you think you might, and you need help at home. You do not have anyone lined up.
-           Tell us your county and what you need, and we introduce you to someone near you.</p>
-        <span class="go"><span class="btn btn-primary">Ask us to find someone</span></span>
-      </a>
-      <a class="lane cool" href="caregivers/">
-        <span class="lmark"><svg class="icon" aria-hidden="true"><use href="#i-hand"/></svg></span>
-        <h2>I want caregiving work</h2>
-        <p>Get paid <strong>$15.00 an hour</strong> to care for someone near you, paid weekly every Thursday.
-           No experience needed. Add your name and we contact you when something comes up in your county.</p>
-        <span class="go"><span class="btn btn-primary">Join the Candidate List</span></span>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- Live supply. Hidden until the numbers are real, because an empty panel
-     would undercut the exact promise it exists to prove. -->
-<section id="supply" style="display:none">
-  <div class="wrap">
-    <div class="supply">
-      <p class="eyebrow">Right now</p>
-      <div class="headline" id="supplyHeadline"></div>
-      <p style="color:var(--ink-soft); margin:0">These are people we have already screened, ready to be introduced.
-         We never publish anyone's name or details.</p>
-      <div class="cgrid" id="supplyGrid"></div>
-    </div>
-  </div>
-</section>
-
-<section style="background:var(--card); border-top:1px solid var(--line); border-bottom:1px solid var(--line)">
-  <div class="wrap">
-    <div class="sec-head">
-      <p class="eyebrow">How the matching works</p>
-      <h2>You still choose. We just make the introduction.</h2>
-    </div>
-    <ol class="steps">
-      <li><span class="num">1</span><div>
-        <h3>Tell us what you need</h3>
-        <p>Your county, roughly how many hours, and the kind of help you are looking for. Two minutes.</p></div></li>
-      <li><span class="num">2</span><div>
-        <h3>We look through our own list</h3>
-        <p>People who want caregiving work in your county, who we have already screened through the Family Care
-           Safety Registry. It is not a directory you browse, and we never publish anyone's details.</p></div></li>
-      <li><span class="num">3</span><div>
-        <h3>We introduce you</h3>
-        <p>You meet them, you ask your questions, and you decide. In this program you are the employer,
-           so the choice is genuinely yours. You can say no and we will keep looking.</p></div></li>
-      <li><span class="num">4</span><div>
-        <h3>We handle everything after that</h3>
-        <p>Payroll, taxes, background screening and all the state paperwork. You direct the care.</p></div></li>
-    </ol>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="sec-head">
-      <p class="eyebrow">Why it matters</p>
-      <h2>The question most agencies cannot answer</h2>
-    </div>
-    <div class="prose">
-      <p>Nearly every Consumer Directed Services provider in Missouri assumes you already have someone. Their
-         forms ask who your caregiver will be. If your answer is "I don't have anybody," you are usually told
-         to go and find one yourself.</p>
-      <p>That is the gap this service exists to close. It is included at no cost when you enroll in CDS with
-         Caring Companions, and there is no cost to take part in CDS either. Medicaid funds the care.</p>
-    </div>
-    <div class="cards" style="margin-top:2rem">
-      <div class="card">
-        <h3>For families</h3>
-        <ul>
-          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Free, and included when you enroll</li>
-          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Everyone we introduce has been screened</li>
-          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>You interview them and you decide</li>
-          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Say no as often as you need to</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>For caregivers</h3>
-        <ul>
-          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg><strong>$15.00 an hour</strong>, paid every Thursday</li>
-          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Work near where you live</li>
-          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>No experience or certificate needed</li>
-          <li><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Your details are never made public</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section style="background:var(--card); border-top:1px solid var(--line)">
-  <div class="wrap">
-    <div class="sec-head"><p class="eyebrow">Questions</p><h2>Frequently asked</h2></div>
-    <div class="faq">
-      <details open>
-        <summary>Can I browse the caregivers myself?</summary>
-        <div class="faq-body">No, and that is deliberate. We do not publish anyone's name, photo or contact details.
-          People looking for caregiving work trust us with their information, and many of them are women working alone
-          in other people's homes. We match on your county and your hours, then make the introduction.</div>
-      </details>
-      <details>
-        <summary>What does it cost?</summary>
-        <div class="faq-body">Nothing. The matching is included when you enroll in CDS with Caring Companions, and
-          the CDS program itself is free to Medicaid participants. Medicaid funds the care.</div>
-      </details>
-      <details>
-        <summary>Do I have to take whoever you suggest?</summary>
-        <div class="faq-body">Not at all. In this program you are the employer and you choose who works for you.
-          Say no as many times as you need to and we will keep looking.</div>
-      </details>
-      <details>
-        <summary>Are they checked?</summary>
-        <div class="faq-body">Yes. Before we introduce anyone they go through the Missouri Family Care Safety Registry
-          and we check the Employee Disqualification List. We only introduce people who are cleared.</div>
-      </details>
-      <details>
-        <summary>What if there is nobody in my county yet?</summary>
-        <div class="faq-body">We will tell you honestly rather than leave you waiting. We are building the network
-          across all 27 counties, and we recruit specifically for the counties where families are waiting.</div>
-      </details>
-      <details>
-        <summary>I already have someone in mind. Do I need this?</summary>
-        <div class="faq-body">No. If you already have a family member or friend who will provide the care, go
-          straight to <a href="https://caringcds.com/">Caring Companions</a> and enroll. This service is
-          for people who do not have anyone.</div>
-      </details>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap" style="text-align:center">
-    <h2 style="margin-bottom:.8rem">Tell us what you need</h2>
-    <p style="color:var(--ink-soft); max-width:52ch; margin:0 auto 1.8rem">It takes two minutes, and a real person
-      calls you back. If you would rather just talk to someone now, the number is below.</p>
-    <div class="hero-actions" style="justify-content:center">
-      <a class="btn btn-primary" href="families/">Ask us to find someone</a>
-      <a class="btn btn-call" href="tel:+14172182888"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg> Call 417-218-2888</a>
-    </div>
-  </div>
-</section>
-
-</main>
-
-<footer>
-  <div class="wrap">
-    <div class="fgrid">
-      <div>
-        <p style="margin-bottom:1rem"><a class="byline" href="https://caringcds.com/">
-          <img src="assets/logo.png" alt="Caring Companions Consumer Directed Services">
-          <span>A service of Caring Companions CDS</span>
-        </a></p>
-        <p>Matching Missouri families with caregivers across 27 Southwest Missouri counties.</p>
-        <p>
-          <a href="tel:+14172182888"><strong>417-218-2888</strong></a><br>
-          Toll free <a href="tel:+18668635151">866-863-5151</a><br>
-          Monday to Friday, 9am to 4pm<br>
-          1331 N Stewart Ave, Springfield, MO 65802
-        </p>
-      </div>
-      <div>
-        <h4>Get started</h4>
-        <ul>
-          <li><a href="families/">I need a caregiver</a></li>
-          <li><a href="caregivers/">I want caregiving work</a></li>
-          <li><a href="https://caringcds.com/">Check if you qualify for CDS</a></li>
-          <li><a href="https://caringcds.com/">Caregiver pay calculator</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4>Counties we cover</h4>
-        <p style="font-size:.86rem; line-height:1.7">Barry · Barton · Benton · Camden · Cedar · Christian · Dade · Dallas · Douglas · Greene · Hickory · Jasper · Laclede · Lawrence · McDonald · Newton · Ozark · Phelps · Polk · Pulaski · St. Clair · Stone · Taney · Texas · Vernon · Webster · Wright</p>
-        <p><a href="https://caringcds.com/service-area/">See the full service area</a></p>
-      </div>
-    </div>
-    <div class="legal">© 2026 Caring Companions Consumer Directed Services, LLC. All rights reserved.</div>
-  </div>
-</footer>
-
-<div class="sticky">
-  <a class="btn btn-call" href="tel:+14172182888"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg> Call now</a>
-  <a class="btn btn-primary" href="families/">Find me a caregiver</a>
-</div>
-
-<script src="assets/site.js" defer></script>
+<div id="app"><noscript><p style="padding:24px;font-family:Poppins,sans-serif">Please call Caring Companions CDS at <a href="tel:+14172182888">417-218-2888</a> (toll free <a href="tel:+18668635151">866-863-5151</a>).</p></noscript></div>
+<script type="module">
+import { mountPublic } from './assets/match/public-app.js';
+mountPublic(document.getElementById('app'), { view: 'landing' });
+</script>
 </body>
 </html>
