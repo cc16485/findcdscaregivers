@@ -224,7 +224,7 @@ export function mountCaregiver(el, opts = {}) {
       try { stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: true }); }
       catch { fallback('We couldn\'t use the camera here. You can record with your phone\'s camera and upload it instead.'); return; }
       const live = $('#live', v); live.srcObject = stream; live.hidden = false; live.play();
-      chunks = []; rec = new MediaRecorder(stream); rec.ondataavailable = e => chunks.push(e.data);
+      chunks = []; rec = new MediaRecorder(stream, { videoBitsPerSecond: 2500000, audioBitsPerSecond: 96000 }); /* 90 s stays near 30 MB, under the 50 MB limit */ rec.ondataavailable = e => chunks.push(e.data);
       rec.onstop = () => { blob = new Blob(chunks, { type: rec.mimeType || 'video/webm' }); stream.getTracks().forEach(t => t.stop()); live.hidden = true;
         const p = $('#play', v); p.src = URL.createObjectURL(blob); p.hidden = false; show('retake', true); show('keep', true); show('next', false); show('stop', false); clearInterval(timer); };
       rec.start(); secs = 0; pi = 0; setPrompt(); $('#plan', v).hidden = true;
