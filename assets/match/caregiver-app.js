@@ -1,5 +1,5 @@
 // Caregiver screens C1 to C7, opened from the caregiver's private link (no password).
-import { api, MODE } from './api.js';
+import { api, MODE, uploadFile } from './api.js';
 import { esc, $, $$, act, toast, fileToDataUrl, shrinkPhoto, fmtWhen, videoHtml, ICON } from './ui.js';
 import { COUNTIES, HELP_TYPES, DAYS, DAY_LABEL, PARTS, PART_LABEL } from './shared/rules.js';
 import { FCSR_HOWTO_URL, FCSR_PHONE } from './shared/messages.js';
@@ -210,7 +210,15 @@ export function mountCaregiver(el, opts = {}) {
       if (!$('#vc', v).checked) { toast('Please check the box to agree to show your video.', 'err'); return false; }
       await call('giveConsent', { kind: 'video' }); return true;
     };
-    const save = async (mime, data) => { if (!(await needConsent())) return; await act(null, () => call('uploadMedia', { kind: 'video', mime, data }), 'Video sent for review.'); go('video'); };
+    // Videos go straight to private storage; only the stand-in practice video uses the old path.
+    const save = async (mime, file) => { if (!(await needConsent())) return;
+      await act(null, async () => {
+        if (typeof file === 'string') return call('uploadMedia', { kind: 'video', mime, data: file });
+        const up = await call('startVideoUpload', { mime, size: file.size });
+        toast('Sending your video. Please keep this page open.');
+        await uploadFile(up.upload_url, file, mime);
+        return call('finishVideoUpload', { media_id: up.media_id });
+      }, 'Video sent for review.'); go('video'); };
     if (!navigator.mediaDevices || !window.MediaRecorder) fallback();
     $('#start', v).onclick = async () => {
       try { stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: true }); }
@@ -227,8 +235,8 @@ export function mountCaregiver(el, opts = {}) {
     $('#next', v).onclick = () => { pi = Math.min(3, pi + 1); setPrompt(); if (pi === 3) show('next', false); };
     $('#stop', v).onclick = () => rec && rec.state === 'recording' && rec.stop();
     $('#retake', v).onclick = () => { show('play', false); show('retake', false); show('keep', false); show('start', true); $('#clock', v).textContent = '0:00'; $('#bar', v).style.width = 0; };
-    $('#keep', v).onclick = async () => save(blob.type, await fileToDataUrl(blob, 20 * 1048576));
-    ['#vf', '#vf2'].forEach(id => { $(id, v).onchange = async e => { const f = e.target.files[0]; if (f) save(f.type || 'video/mp4', await fileToDataUrl(f, 20 * 1048576)); }; });
+    $('#keep', v).onclick = async () => save(blob.type || 'video/webm', blob);
+    ['#vf', '#vf2'].forEach(id => { $(id, v).onchange = async e => { const f = e.target.files[0]; if (f) save(f.type || 'video/mp4', f); }; });
     if ($('#stand', v)) $('#stand', v).onclick = () => save('video/practice', 'practice-video:' + d.first_name);
     if ($('#rm', v)) $('#rm', v).onclick = async e => { await act(e.currentTarget, () => call('removeVideo'), 'Video removed.'); go('video'); };
   }

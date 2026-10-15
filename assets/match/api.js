@@ -36,6 +36,21 @@ export async function api(role, action, input = {}, ctx = {}) {
   return body;
 }
 
+// Send a big file (a caregiver's video) straight to the one-time upload address
+// the server handed out. Practice mode keeps it in this browser instead.
+export async function uploadFile(url, file, mime) {
+  if (String(url).startsWith('practice-upload:')) {
+    const p = await practice();
+    const data = await new Promise((res, rej) => { const f = new FileReader(); f.onload = () => res(f.result); f.onerror = rej; f.readAsDataURL(file); });
+    await p.db.query('update cds_media set practice_data=$2, bytes=$3 where id=$1', [url.slice(16), data, file.size]);
+    return;
+  }
+  let r;
+  try { r = await fetch(url, { method: 'PUT', headers: { 'Content-Type': mime || file.type || 'video/mp4', 'x-upsert': 'false' }, body: file }); }
+  catch { throw new ApiError('The video didn\'t finish sending. Check your connection and try again.', 0); }
+  if (!r.ok) throw new ApiError('The video didn\'t finish sending. Please try again, or call 417-218-2888.', r.status);
+}
+
 // The caregiver sign-up form writes straight to the existing caregiver list,
 // exactly as the live form does today (insert only, the public can't read it back).
 export async function joinCaregiverList(row) {
