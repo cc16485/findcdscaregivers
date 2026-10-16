@@ -159,59 +159,171 @@ export function mountPublic(el, opts = {}) {
     </article>`;
   }
 
-  // P3: the existing join form, with the FCSR question added.
+  // P3: Join our caregiver list. Wording approved by Samantha 2026-10-16.
+  // Saves through the server (Hub to-do + office email). If the server can't be
+  // reached, it falls back to saving straight to the list so no one is lost;
+  // the database still makes the Hub to-do.
   function join() {
+    const AVAIL = ['Weekday mornings', 'Weekday afternoons', 'Weekday evenings', 'Saturdays', 'Sundays', 'Overnights', 'Short notice', 'Flexible'];
+    const sel = (id, opts) => `<select id="${id}"><option value="">Choose one</option>${opts.map(o => Array.isArray(o) ? `<option value="${esc(o[0])}">${esc(o[1])}</option>` : `<option>${esc(o)}</option>`).join('')}</select>`;
+    const chips = (id, items) => `<div class="cm-chips" id="${id}">${items.map(c => `<button type="button" class="cm-chip" data-v="${esc(c)}" aria-pressed="false">${esc(c)}</button>`).join('')}</div>`;
+    const radios = (name, items) => `<div class="cm-chips" role="radiogroup">${items.map(([v, l]) => `<label class="cm-check"><input type="radio" name="${name}" value="${esc(v)}"> ${esc(l)}</label>`).join('')}</div>`;
     el.innerHTML = `<header class="pl-top"><div class="pl-in pl-top-in">
         <img src="${esc(opts.logo || 'assets/logo.png')}" alt="Caring Companions Consumer Directed Services" class="pl-logo" width="770" height="206">
         <span class="pl-top-call">Call <b>417-218-2888</b><small>Toll free 866-863-5151</small></span>
       </div></header><div class="cm-app">
       ${opts.onNavigate ? `<button class="cm-back" id="back">${ICON.back} Back</button>` : ''}
-      <h1>Join our caregiver list</h1>
-      <p class="cm-sub">Families who direct their own care through Missouri's CDS program are looking for caregivers like you. Tell us about yourself and our office will call you.</p>
+      <div id="jtop">
+        <h1>Join our caregiver list</h1>
+        <p class="cm-sub">Families across Southwest Missouri use the Consumer Directed Services (CDS) program to hire their own caregiver. Some need someone full time, some part time, and some need a person who can fill in now and then. Join our list and we'll help families near you meet you.</p>
+        <p class="cm-sub" style="margin-top:10px">Signing up takes about two minutes. It doesn't commit you to anything, and you can say no to any family.</p>
+      </div>
+      <div class="cm-card tint" id="jpay"><div><strong style="font-size:1.5rem;color:var(--navy)">$15 to $16 per hour</strong></div><p class="cm-small" style="margin:0">Paid weekly, every Thursday, by direct deposit or pay card.</p></div>
+      <div class="cm-card flat" id="jhow"><p style="margin:0"><strong>How CDS works:</strong> the family is your employer. They choose, hire and supervise you. Caring Companions CDS handles payroll, taxes and the program paperwork, and we help with introductions.</p></div>
       <form id="jf" class="cm-card" novalidate>
+        <h2>Your contact information</h2>
         <div class="cm-grid2">
           <div class="cm-field"><label for="jfn">First name</label><input id="jfn" required autocomplete="given-name"></div>
           <div class="cm-field"><label for="jln">Last name</label><input id="jln" required autocomplete="family-name"></div>
         </div>
         <div class="cm-grid2">
-          <div class="cm-field"><label for="jph">Phone</label><input id="jph" type="tel" required autocomplete="tel"></div>
+          <div class="cm-field"><label for="jph">Phone</label><input id="jph" type="tel" required autocomplete="tel" inputmode="tel"></div>
           <div class="cm-field"><label for="jem">Email</label><input id="jem" type="email" autocomplete="email"></div>
         </div>
         <div class="cm-grid2">
-          <div class="cm-field"><label for="jci">Town</label><input id="jci" autocomplete="address-level2"></div>
-          <div class="cm-field"><label for="jzi">ZIP</label><input id="jzi" inputmode="numeric" maxlength="5"></div>
+          <div class="cm-field"><label for="jci">Town you live in</label><input id="jci" autocomplete="address-level2"></div>
+          <div class="cm-field"><label for="jzi">ZIP</label><input id="jzi" inputmode="numeric" maxlength="5" autocomplete="postal-code"></div>
         </div>
-        <span class="cm-label">Counties you'd work in</span>
-        <div class="cm-chips" id="jco">${COUNTIES.map(c => `<button type="button" class="cm-chip" data-v="${c}" aria-pressed="false">${c}</button>`).join('')}</div>
-        <div class="cm-field"><label for="jex">Caregiving experience</label><select id="jex"><option value="">Choose</option><option>Less than 1 year</option><option>1 to 3 years</option><option>3 to 5 years</option><option>More than 5 years</option><option>Family caregiving only</option></select></div>
-        <fieldset class="cm-card tint" style="border:0">
+
+        <h2>Most important question</h2>
+        <p class="cm-small" style="margin:0">Many people come to us because there is already someone they look after, or want to. If that's you, say so here. It usually means we can move much faster.</p>
+        <span style="font-weight:600">Do you already have someone you would be caring for?</span>
+        ${radios('jhas', [['Yes', 'Yes, I have someone'], ['No', 'No, I am looking for work'], ['Not sure', 'Not sure yet']])}
+        <div id="jhasMore" hidden><div style="display:grid;gap:12px">
+          <div class="cm-field"><label for="jcn">Their name</label><input id="jcn"></div>
+          <div class="cm-grid2">
+            <div class="cm-field"><label for="jcr">They are your</label>${sel('jcr', ['Parent', 'Grandparent', 'Adult child', 'Brother or sister', 'Other relative', 'Friend', 'Neighbor', 'No relation'])}</div>
+            <div class="cm-field"><label for="jcm">Do they have Missouri Medicaid?</label>${sel('jcm', ['Yes, active Medicaid', 'Not sure', 'No'])}</div>
+          </div>
+          <p class="cm-small" style="margin:0">You cannot be paid to care for your husband or wife, or for someone whose legal guardian you are. That is a state rule. Everyone else is fine.</p>
+        </div></div>
+
+        <h2>Where you can work</h2>
+        <p class="cm-small" style="margin:0">Tap every county you would be willing to work in.</p>
+        ${chips('jco', COUNTIES)}
+        <div class="cm-grid2">
+          <div class="cm-field"><label for="jmi">How far will you drive?</label>${sel('jmi', [['10', 'Up to 10 miles'], ['20', 'Up to 20 miles'], ['30', 'Up to 30 miles'], ['45', 'Up to 45 miles'], ['100', 'Distance is not a problem']])}</div>
+          <div class="cm-field"><label for="jtr">Reliable transportation?</label>${sel('jtr', [['yes', 'Yes'], ['no', 'No']])}</div>
+        </div>
+
+        <h2>When you are available</h2>
+        <p class="cm-small" style="margin:0">Tap anything that could work. This is just a rough idea, not a schedule.</p>
+        ${chips('jav', AVAIL)}
+        <div class="cm-field"><label for="jhw">What kind of position are you looking for?</label>${sel('jhw', ['Full time, 30+ hours a week', 'Part time, around 10 to 25 hours a week', 'A few hours a week', 'Fill-in shifts only', 'Whatever is available'])}</div>
+
+        <h2>Your experience</h2>
+        <p class="cm-small" style="margin:0">No experience is fine. Many of our best caregivers started by caring for their own family.</p>
+        <div class="cm-field"><label for="jex">Caregiving experience</label>${sel('jex', ['No experience, willing to learn', 'I have cared for a family member', 'Some paid caregiving experience', 'Several years of paid caregiving', 'Professional or certified caregiver'])}</div>
+        <label class="cm-check"><input type="checkbox" id="jcpr"> I have current CPR or First Aid certification</label>
+        <label class="cm-check"><input type="checkbox" id="jcna"> I am a CNA, CMT, LPN, RN or similar</label>
+        <label class="cm-check"><input type="checkbox" id="jwb"> I have worked for Caring Companions before</label>
+        <div class="cm-field"><label for="jco2">Any other certifications or training</label><input id="jco2" placeholder="Optional"></div>
+        <div class="cm-field"><label for="jen">Anything else about your experience</label><textarea id="jen" placeholder="Optional. For example: I cared for my grandmother for three years."></textarea></div>
+
+        <h2>State screening</h2>
+        <fieldset class="cm-card tint" style="border:0;margin:0">
           <legend class="cm-label" style="padding:0">Missouri Family Care Safety Registry (FCSR)</legend>
-          <p class="cm-small" style="margin:0">${esc(FCSR_EXPLAINER[0])}</p>
           <span style="font-weight:600">Are you already registered with the Missouri Family Care Safety Registry?</span>
-          <label class="cm-check"><input type="radio" name="fcsr" value="yes"> Yes</label>
-          <label class="cm-check"><input type="radio" name="fcsr" value="no"> No</label>
-          <label class="cm-check"><input type="radio" name="fcsr" value="not_sure"> Not sure</label>
-          <p class="cm-small" style="margin:0">Already registered? You don't pay again. If you're not registered, we'll send you the official steps. The one-time state fee is $16, or $16.57 online.</p>
+          ${radios('jfcsr', [['yes', 'Yes'], ['no', 'No'], ['not_sure', 'Not sure']])}
+          <label class="cm-check" id="jbgw"><input type="checkbox" id="jbg"> <span>I understand Missouri requires every CDS caregiver to register with the Family Care Safety Registry and pass the state's screening, and I'm willing to complete it. If I'm not registered yet, the one-time state fee is $16 ($16.57 online). If I'm already registered, I don't pay again.</span></label>
         </fieldset>
-        <div class="cm-field"><label for="jno">Anything else you'd like us to know?</label><textarea id="jno"></textarea></div>
-        <button class="cm-btn block" type="submit">Join the list</button>
-        <p class="cm-small">Joining doesn't list you in the directory. Our office reviews every caregiver first, and you approve your profile before any family sees it. Never send your Social Security number by email or text.</p>
+
+        <h2>A few last questions</h2>
+        <div class="cm-field"><label for="jhh">How did you hear about us?</label>${sel('jhh', ['A current caregiver told me', 'A consumer or family member told me', 'Facebook or social media', 'Found your website', 'Job posting', 'Someone at Caring Companions contacted me', 'Other'])}</div>
+        <div class="cm-field"><label for="jno">Anything you would like us to know</label><textarea id="jno" placeholder="Optional"></textarea></div>
+        <input id="jweb" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px">
+
+        <div class="cm-card flat" style="margin:0"><p style="margin:0"><strong>About your profile:</strong> After you sign up, you can build a profile for our private caregiver directory. Families see only what you approve: your first name, photo, town, availability and your own words. Your last name, phone, email and address are never shown.</p></div>
+        <p class="cm-small" style="margin:0">Please don't put your Social Security number on this form, and never send it by email or text. We ask for it later through your private, secure link, only to run your state screening.</p>
+        <p class="cm-small" id="jerr" role="alert" style="margin:0;color:var(--bad);font-weight:600" hidden></p>
+        <button class="cm-btn honey block" type="submit">Add me to the caregiver list</button>
+        <p class="cm-small" style="margin:0;text-align:center">Questions? Call 417-218-2888, or toll free 866-863-5151, Monday to Friday 9am to 4pm.</p>
       </form>
-      <div class="cm-card tint" id="jthanks" hidden><h2>Thank you!</h2><p class="cm-sub">You're on our caregiver list. Our office will call you to talk about next steps.</p></div>
+      <div class="cm-card tint" id="jthanks" hidden>
+        <h2 id="jthx">You're on our caregiver list.</h2>
+        <p style="margin:0;font-weight:600">What happens next:</p>
+        <ol style="margin:0;padding-left:1.3em;display:grid;gap:6px">
+          <li>Someone from our office calls or texts you to say hello and answer your questions.</li>
+          <li>We send your private link to build your profile: a photo, a few words about you, your availability, and an optional short intro video.</li>
+          <li>We walk you through the state screening.</li>
+          <li>After we review your profile, invited families near you can see it and ask to meet you. You say yes or no to every request.</li>
+        </ol>
+        <p style="margin:0">There's nothing else you need to do right now.</p>
+        <p class="cm-small" style="margin:0">Need us before then? Call 417-218-2888, or toll free 866-863-5151.</p>
+      </div>
     </div>`;
     if ($('#back', el)) $('#back', el).onclick = () => opts.onNavigate('landing');
-    $$('#jco .cm-chip', el).forEach(b => b.onclick = () => b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true')));
+    $$('.cm-chips .cm-chip', el).forEach(b => b.onclick = () => b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true')));
+    $$('input[name=jhas]', el).forEach(r => r.onchange = () => { $('#jhasMore', el).hidden = r.value !== 'Yes'; });
+    const ph = $('#jph', el);
+    ph.oninput = () => {
+      const d = ph.value.replace(/\D/g, '').replace(/^1(?=\d{10})/, '').slice(0, 10);
+      ph.value = d.length > 6 ? `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}` : d.length > 3 ? `(${d.slice(0, 3)}) ${d.slice(3)}` : d.length ? `(${d}` : '';
+    };
+    const picked = id => $$(`#${id} .cm-chip[aria-pressed="true"]`, el).map(b => b.dataset.v);
+    const radio = n => ($(`input[name=${n}]:checked`, el) || {}).value || null;
     $('#jf', el).onsubmit = async e => {
       e.preventDefault();
-      const fcsr = ($('input[name=fcsr]:checked', el) || {}).value;
-      await act($('button[type=submit]', el), async () => {
-        if (!$('#jfn', el).value.trim() || !$('#jln', el).value.trim() || !$('#jph', el).value.trim()) throw new Error('Please add your first name, last name and phone.');
-        if (!fcsr) throw new Error('Please answer the FCSR question. "Not sure" is fine.');
-        await joinCaregiverList({ first_name: $('#jfn', el).value.trim(), last_name: $('#jln', el).value.trim(), phone: $('#jph', el).value.trim(), email: $('#jem', el).value.trim(),
-          city: $('#jci', el).value.trim(), zip: $('#jzi', el).value.trim(), counties: $$('#jco .cm-chip[aria-pressed="true"]', el).map(b => b.dataset.v),
-          experience: $('#jex', el).value, applicant_notes: $('#jno', el).value, fcsr_registered_answer: fcsr });
-      });
-      $('#jf', el).hidden = true; $('#jthanks', el).hidden = false;
+      const err = $('#jerr', el);
+      const problems = [];
+      if (!$('#jfn', el).value.trim()) problems.push('your first name');
+      if (!$('#jln', el).value.trim()) problems.push('your last name');
+      if ($('#jph', el).value.replace(/\D/g, '').length !== 10) problems.push('a 10-digit phone number');
+      if (!radio('jhas')) problems.push('whether you already have someone to care for');
+      if (!picked('jco').length) problems.push('at least one county');
+      if (!$('#jbg', el).checked) problems.push('the state screening checkbox');
+      if (problems.length) {
+        err.textContent = 'Please add ' + problems.join(', ').replace(/, ([^,]*)$/, ' and $1') + '.';
+        err.hidden = false; err.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      err.hidden = true;
+      const has = radio('jhas');
+      const input = {
+        first_name: $('#jfn', el).value.trim(), last_name: $('#jln', el).value.trim(), phone: $('#jph', el).value.trim(), email: $('#jem', el).value.trim(),
+        city: $('#jci', el).value.trim(), zip: $('#jzi', el).value.trim(), counties: picked('jco'), availability: picked('jav'),
+        max_miles: $('#jmi', el).value ? Number($('#jmi', el).value) : null,
+        has_transport: $('#jtr', el).value === 'yes' ? true : $('#jtr', el).value === 'no' ? false : null,
+        hours_wanted: $('#jhw', el).value || null, experience: $('#jex', el).value || null, experience_notes: $('#jen', el).value.trim(),
+        cert_cpr: $('#jcpr', el).checked, cert_cna: $('#jcna', el).checked, cert_other: $('#jco2', el).value.trim(), worked_here_before: $('#jwb', el).checked,
+        has_potential_consumer: has,
+        consumer_name: has === 'Yes' ? $('#jcn', el).value.trim() : '', consumer_relationship: has === 'Yes' ? $('#jcr', el).value : '', consumer_has_medicaid: has === 'Yes' ? $('#jcm', el).value : '',
+        fcsr_registered_answer: radio('jfcsr'), background_ok: true, how_heard: $('#jhh', el).value || null, applicant_notes: $('#jno', el).value.trim(),
+        website: $('#jweb', el).value,
+      };
+      try {
+        await act($('button[type=submit]', el), async () => {
+          try { await api('public', 'joinList', input); }
+          catch (ex) {
+            // A real answer from the server (like a missing field) is shown as is.
+            // Only an unreachable, broken or older server falls back to the direct save.
+            if (ex.status && ex.status < 500 && ex.status !== 404) throw ex;
+            if (input.website) return;
+            await joinCaregiverList({
+              first_name: input.first_name, last_name: input.last_name, phone: input.phone, email: input.email || null, city: input.city || null, zip: input.zip || null,
+              counties: input.counties, availability: input.availability, max_miles: input.max_miles, has_transport: input.has_transport, hours_wanted: input.hours_wanted,
+              experience: input.experience, experience_notes: input.experience_notes || null, cert_cpr: input.cert_cpr, cert_cna: input.cert_cna, cert_other: input.cert_other || null,
+              worked_here_before: input.worked_here_before, has_potential_consumer: has, knows_consumer: input.consumer_name || null,
+              consumer_relationship: input.consumer_relationship || null, consumer_has_medicaid: input.consumer_has_medicaid || null,
+              how_heard: input.how_heard, applicant_notes: input.applicant_notes || null, fcsr_registered_answer: input.fcsr_registered_answer,
+            });
+          }
+        });
+      } catch { return; }
+      $('#jthx', el).textContent = 'You\'re on our caregiver list. Thank you, ' + input.first_name + '.';
+      ['#jf', '#jtop', '#jpay', '#jhow'].forEach(s => { $(s, el).hidden = true; });
+      $('#jthanks', el).hidden = false;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     };
   }
 }
