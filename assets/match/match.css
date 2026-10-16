@@ -353,3 +353,9 @@
 .pv-fit li.ok{color:#174c49}
 .pv-fit li.ok .icon{color:var(--teal-deep);width:15px;height:15px;vertical-align:-2px}
 .pv-fit li.ask{color:#8a5208}
+
+/* Caregiver welcome: how it works */
+.cg-how{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.cg-how li{display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:start}
+.cg-how-n{width:36px;height:36px;border-radius:50%;background:var(--navy);color:#fff;font-weight:700;display:grid;place-items:center}
+.cg-how b{color:var(--navy)}
