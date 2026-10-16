@@ -26,13 +26,35 @@ export function mountCaregiver(el, opts = {}) {
   async function go(view) {
     try { await refresh(); }
     catch (e) { el.innerHTML = `<div class="cm-app">${brand()}<div class="cm-card"><h2>We couldn't open your page</h2><p class="cm-sub">${esc(e.message)}</p></div></div>`; return; }
-    const views = { home, requirements, profile, photo, video, availability, consent, intros };
+    const views = { welcome, home, requirements, profile, photo, video, availability, consent, intros };
     el.innerHTML = `<div class="cm-app cg ${view === 'consent' ? 'cg-wide' : ''}">${brand()}<div id="v"></div></div>`;
     (views[view] || home)($('#v', el));
     window.scrollTo({ top: 0 });
   }
   const back = () => `<button class="cm-back" data-go="home">${ICON.back} Back to my checklist</button>`;
   const wireBack = root => $$('[data-go]', root).forEach(b => b.onclick = () => go(b.dataset.go));
+
+  // ---------- C0 welcome: shown right after someone signs up (wording approved 2026-10-16) ----------
+  function welcome(v) {
+    const steps = [
+      ['Build your profile', 'Add a friendly photo, a few words about you, the days and times you can work and, if you like, a short intro video from your phone. It takes about 10 minutes, and your answers save as you go.'],
+      ['Complete the state screening', 'Missouri requires every CDS caregiver to register with the Family Care Safety Registry. We walk you through it and run the screening for you. Already registered? You don\'t pay again.'],
+      ['Give your OK', 'You preview exactly what families will see. Nothing is shown until you agree.'],
+      ['Our office reviews it', 'We call or text to say hello, answer your questions and check everything over.'],
+      ['Families ask to meet you', 'Invited families near you can see your profile and ask for an introduction. You say yes or no to every request, and the family decides who to hire.'],
+    ];
+    v.innerHTML = `<div class="cm-stack">
+      <h1>Welcome, ${esc(d.first_name)}! You're on our caregiver list.</h1>
+      <p class="cm-sub">Next, you'll build your profile for our private caregiver directory. Here's how it works.</p>
+      <ol class="cg-how">${steps.map(([t, x], i) => `<li><span class="cg-how-n">${i + 1}</span><div><b>${esc(t)}</b><p class="cm-sub">${esc(x)}</p></div></li>`).join('')}</ol>
+      <div class="cm-card tint"><b style="color:var(--navy)">What families see</b><p class="cm-sub" style="margin:0">Your first name, photo, town, the areas you work in, your availability and your own words. Never your last name, phone, email or address.</p></div>
+      <div class="cm-card flat"><b style="color:var(--navy)">This page is your private link</b><p class="cm-sub" style="margin:0">Bookmark it or add it to your home screen so you can come back any time to finish your profile or update your days and times. Please don't share it. Lost it? Call 417-218-2888 (toll free 866-863-5151) and we'll send it again.</p></div>
+      <button class="cm-btn honey block" data-go="profile">Start my profile</button>
+      <button class="cm-btn ghost block" data-go="home">See all my steps</button>
+    </div>`;
+    wireBack(v);
+    try { history.replaceState(null, '', location.pathname + '?c=' + encodeURIComponent(link)); } catch {}
+  }
 
   // ---------- C1 home ----------
   function home(v) {

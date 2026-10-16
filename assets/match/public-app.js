@@ -176,7 +176,7 @@ export function mountPublic(el, opts = {}) {
       <div id="jtop">
         <h1>Join our caregiver list</h1>
         <p class="cm-sub">Families across Southwest Missouri use the Consumer Directed Services (CDS) program to hire their own caregiver. Some need someone full time, some part time, and some need a person who can fill in now and then. Join our list and we'll help families near you meet you.</p>
-        <p class="cm-sub" style="margin-top:10px">Signing up takes about two minutes. It doesn't commit you to anything, and you can say no to any family.</p>
+        <p class="cm-sub" style="margin-top:10px">Signing up takes about two minutes, then you'll go straight to building your profile. It doesn't commit you to anything, and you can say no to any family.</p>
       </div>
       <div class="cm-card tint" id="jpay"><div><strong style="font-size:1.5rem;color:var(--navy)">$15 to $16 per hour</strong></div><p class="cm-small" style="margin:0">Paid weekly, every Thursday, by direct deposit or pay card.</p></div>
       <div class="cm-card flat" id="jhow"><p style="margin:0"><strong>How CDS works:</strong> the family is your employer. They choose, hire and supervise you. Caring Companions CDS handles payroll, taxes and the program paperwork, and we help with introductions.</p></div>
@@ -251,6 +251,7 @@ export function mountPublic(el, opts = {}) {
       </form>
       <div class="cm-card tint" id="jthanks" hidden>
         <h2 id="jthx">You're on our caregiver list.</h2>
+        <p id="jrepeat" style="margin:0" hidden>We already have your phone number on file, so for your privacy we'll send your private profile link to that number instead of showing it here.</p>
         <p style="margin:0;font-weight:600">What happens next:</p>
         <ol style="margin:0;padding-left:1.3em;display:grid;gap:6px">
           <li>Someone from our office calls or texts you to say hello and answer your questions.</li>
@@ -301,9 +302,10 @@ export function mountPublic(el, opts = {}) {
         fcsr_registered_answer: radio('jfcsr'), background_ok: true, how_heard: $('#jhh', el).value || null, applicant_notes: $('#jno', el).value.trim(),
         website: $('#jweb', el).value,
       };
+      let res = null;
       try {
         await act($('button[type=submit]', el), async () => {
-          try { await api('public', 'joinList', input); }
+          try { res = await api('public', 'joinList', input); }
           catch (ex) {
             // A real answer from the server (like a missing field) is shown as is.
             // Only an unreachable, broken or older server falls back to the direct save.
@@ -320,7 +322,17 @@ export function mountPublic(el, opts = {}) {
           }
         });
       } catch { return; }
-      $('#jthx', el).textContent = 'You\'re on our caregiver list. Thank you, ' + input.first_name + '.';
+      // New sign-up: straight into their profile, starting with how it works.
+      if (res && res.link) {
+        const u = new URL(res.link, location.href);
+        u.searchParams.set('view', 'welcome');
+        $('#jf button[type=submit]', el).disabled = true;
+        $('#jf button[type=submit]', el).textContent = 'Opening your profile…';
+        location.href = u.toString();
+        return;
+      }
+      if (res && res.repeat) $('#jrepeat', el).hidden = false;
+      $('#jthx', el).textContent = (res && res.repeat ? 'You\'re on our caregiver list. Thanks again, ' : 'You\'re on our caregiver list. Thank you, ') + input.first_name + '.';
       ['#jf', '#jtop', '#jpay', '#jhow'].forEach(s => { $(s, el).hidden = true; });
       $('#jthanks', el).hidden = false;
       window.scrollTo({ top: 0, behavior: 'smooth' });
