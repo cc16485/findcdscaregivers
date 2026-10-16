@@ -107,6 +107,7 @@ export function mountPublic(el, opts = {}) {
         <div class="cm-card flat pl-choose">
           <h2>You choose. You hire. We help with introductions.</h2>
           <p class="cm-sub">With CDS, you're the employer: you choose, hire, train and supervise your caregiver. Caring Companions CDS helps you meet caregivers and handles the program paperwork. We don't assign caregivers or guarantee a match.</p>
+          <p class="cm-sub">The directory is a service of Caring Companions CDS. You're welcome to look whether or not you choose us as your CDS agency.</p>
         </div>
         <div class="cm-card pl-join">
           <h2>Interested in becoming a CDS caregiver?</h2>
