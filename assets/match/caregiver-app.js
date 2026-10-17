@@ -41,7 +41,7 @@ export function mountCaregiver(el, opts = {}) {
       ['Complete the state screening', 'Missouri requires every CDS caregiver to register with the Family Care Safety Registry. We walk you through it and run the screening for you. Already registered? You don\'t pay again.'],
       ['Give your OK', 'You preview exactly what families will see. Nothing is shown until you agree.'],
       ['Our office reviews it', 'We call or text to say hello, answer your questions and check everything over.'],
-      ['Families ask to meet you', 'Invited families near you can see your profile and ask for an introduction. You say yes or no to every request, and the family decides who to hire.'],
+      ['Families ask to meet you', 'Once your state screening is complete, invited families near you can see your profile and ask for an introduction. You say yes or no to every request, and the family decides who to hire.'],
     ];
     v.innerHTML = `<div class="cm-stack">
       <h1>Welcome, ${esc(d.first_name)}! You're on our caregiver list.</h1>
@@ -307,7 +307,7 @@ export function mountCaregiver(el, opts = {}) {
     const p = d.draft;
     const preview = {
       first_name: d.first_name, town: p.town, counties: p.counties || [], photo_url: d.photo_url, video_url: d.consents.video ? d.video_url : null,
-      section: d.listing_text.includes('complete') ? 'complete' : 'in_progress', availability: d.availability, hours_min: d.hours_min, hours_max: d.hours_max,
+      section: d.listing_text.includes('complete') ? 'complete' : 'not_listed', availability: d.availability, hours_min: d.hours_min, hours_max: d.hours_max,
       confirmed_text: d.availability_confirmed_text, accepting: d.accepting_intros && !d.paused,
       about_me: p.about_me, enjoy_most: p.enjoy_most, interests: p.interests, setting_pref: p.setting_pref, experience: p.experience,
       help_types: (p.help_types || []).map(h => HELP_TYPES[h]), languages: p.languages || [], has_car: !!p.has_car, travel_miles: p.travel_miles,
@@ -321,7 +321,7 @@ export function mountCaregiver(el, opts = {}) {
       <div class="cm-row cm-wrap"><button class="cm-btn ghost" data-go="profile">Edit my words</button><button class="cm-btn ghost" data-go="photo">Change photo</button><button class="cm-btn ghost" data-go="availability">Change days and times</button></div>
       <div class="cm-card">
         <label class="cm-check"><input type="checkbox" id="pc" ${d.consents.profile ? 'checked disabled' : ''}> ${esc(d.consent_wording.profile.text)}</label>
-        <button class="cm-btn block" id="submit" ${d.review_status === 'approved' ? 'disabled' : ''}>${d.review_status === 'submitted' ? 'Sent for review' : d.review_status === 'approved' ? 'Approved. Families can see this.' : 'Send to our office for review'}</button>
+        <button class="cm-btn block" id="submit" ${d.review_status === 'approved' ? 'disabled' : ''}>${d.review_status === 'submitted' ? 'Sent for review' : d.review_status === 'approved' ? (d.listing_text.includes('complete') ? 'Approved. Families can see this.' : 'Approved. Families see it once your screening is complete.') : 'Send to our office for review'}</button>
       </div>
       <div class="cm-card flat">
         <b style="color:var(--navy)">Need a break?</b>
