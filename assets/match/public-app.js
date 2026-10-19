@@ -111,7 +111,7 @@ export function mountPublic(el, opts = {}) {
         </div>
         <div class="cm-card pl-join">
           <h2>Interested in becoming a CDS caregiver?</h2>
-          <p class="cm-sub">Join our caregiver network. Missouri requires every CDS caregiver to register with the Family Care Safety Registry and pass the state's screening. Registration is a one-time $16 state fee ($16.57 online). If you're already registered, you don't pay again. We complete the screening and walk you through each step.</p>
+          <p class="cm-sub">Join our caregiver network and earn $15 to $16 an hour, paid every Thursday. Missouri requires every CDS caregiver to register with the Family Care Safety Registry and pass the state's screening. Registration is a one-time $16 state fee ($16.57 online). If you're already registered, you don't pay again. We complete the screening and walk you through each step.</p>
           <button class="cm-btn ghost" id="toJoin">Join our caregiver list</button>
         </div>
       </div></section>
