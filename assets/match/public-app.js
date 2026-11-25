@@ -46,6 +46,7 @@ export function mountPublic(el, opts = {}) {
               <li>${ICON.check} For you or someone you love, at home</li>
               <li>${ICON.check} We help you meet caregivers near you</li>
               <li>${ICON.check} You choose who to hire, and you can say no as often as you need</li>
+              <li>${ICON.check} Already have a caregiver? Find a backup near you for days they're sick or can't work</li>
             </ul>
             <a class="cm-btn honey block" href="#req" data-req>Help me find a caregiver</a>
           </div>
@@ -151,6 +152,7 @@ export function mountPublic(el, opts = {}) {
           <ul class="pl-ticks">
             <li>${ICON.check} $15 to $16 an hour, paid every Thursday by direct deposit or pay card</li>
             <li>${ICON.check} Full time, part time, or a few fill-in shifts</li>
+            <li>${ICON.check} Families also need backup caregivers for sick days, so even a few shifts a month helps</li>
             <li>${ICON.check} You say yes or no to every family</li>
             <li>${ICON.check} No experience? Many great caregivers started with their own family</li>
             <li>${ICON.check} Already caring for someone? They may be able to hire you through CDS</li>
@@ -218,7 +220,7 @@ export function mountPublic(el, opts = {}) {
       <div class="cm-card flat" id="jhow"><h2 style="margin:0">How the caregiver directory works</h2>
         <ol style="margin:0;padding-left:1.3em;display:grid;gap:6px">
           <li>You make a short profile: a photo, a few words about you, and the days you can work.</li>
-          <li>Families near you who need care look through the directory and find you.</li>
+          <li>Families near you look through the directory and find you, whether they need a main caregiver or a backup for days theirs is sick or can't work.</li>
           <li>When a family would like to meet you, they ask in the directory and we text you. You say yes or no.</li>
           <li>If it's a fit, the family hires you. The family is your employer, and Caring Companions CDS handles payroll, taxes and the paperwork.</li>
         </ol>
