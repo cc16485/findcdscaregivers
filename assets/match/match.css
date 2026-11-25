@@ -407,3 +407,11 @@
 .pl-tasklist .icon{flex:none;margin-top:3px;color:var(--teal-deep);stroke-width:2.6}
 .pl-jobdetails{margin-top:12px}
 .pl-jobdetails summary{cursor:pointer;font-weight:700;color:var(--navy)}
+
+/* caregiver shares phone and email (her word 11-25) */
+.pv-contact{display:grid;gap:8px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px}
+.pv-contact b{color:var(--navy)}
+.pv-cbtns{display:flex;flex-wrap:wrap;gap:8px}
+.pv-cbtn{flex:1 1 auto;justify-content:center;text-decoration:none}
+.fam-direct{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;font-weight:600;color:var(--navy)}
+.fam-direct .icon{width:15px;height:15px}

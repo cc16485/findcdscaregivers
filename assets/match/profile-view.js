@@ -19,6 +19,18 @@ export function weekGrid(av) {
 }
 
 // c: the family-facing profile object. opts.preview: caregiver's own preview.
+// The caregiver chose to share these (consent 'contact', her word 11-25). Families reach them directly.
+export function contactHtml(c) {
+  const k = c.contact || {};
+  const btn = (href, icon, label) => `<a class="cm-btn ${label === 'Call' ? 'honey' : 'ghost'} pv-cbtn" href="${esc(href)}">${icon} ${label}</a>`;
+  return `<div class="pv-contact">
+    <b>Reach ${esc(c.first_name)} directly to set up an interview</b>
+    <div class="pv-cbtns">${k.phone_e164 ? btn('tel:' + k.phone_e164, ICON.phone, 'Call') + btn('sms:' + k.phone_e164, ICON.text, 'Text') : ''}${k.email ? btn('mailto:' + k.email, ICON.mail, 'Email') : ''}</div>
+    <span class="cm-small">${k.phone ? esc(k.phone) : ''}${k.phone && k.email ? ' · ' : ''}${k.email ? esc(k.email) : ''}</span>
+    <span class="cm-small">Please mention you found ${esc(c.first_name)} on Find CDS Caregivers.</span>
+  </div>`;
+}
+
 export function profileHtml(c, opts = {}) {
   const complete = c.section === 'complete';
   const badge = complete ? `<span class="cm-pill ok">${ICON.shield} Screening complete</span>`
@@ -59,7 +71,7 @@ export function profileHtml(c, opts = {}) {
       ${c.setting_pref ? `<div class="pv-block"><h2>Where I do my best work</h2><p>${esc(c.setting_pref)}</p></div>` : ''}
       ${c.current_cds_hours ? `<p class="cm-small">${esc(c.first_name)} already works for another CDS consumer and is looking for more hours.</p>` : ''}
       <div class="pv-cta-mob">${opts.cta || ''}</div>
-      <p class="cm-small">Last name, phone and address are shared only after you both agree to meet.</p>
+      <p class="cm-small">${c.contact ? 'Address and last name are never shown.' : 'Last name, phone and address are shared only after you both agree to meet.'}</p>
     </div>
   </article></div>`;
 }
