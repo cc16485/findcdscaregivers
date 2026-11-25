@@ -2,7 +2,6 @@
 // Shows counts of fully screened caregivers by county. Never a person.
 import { api, joinCaregiverList, MODE } from './api.js';
 import { IHS_SECTION_APPROVED } from './mode.js';
-import { SAMPLES } from './samples.js';
 import { esc, $, $$, act, ICON } from './ui.js';
 import { COUNTIES, PROGRAMS, RELATIONSHIPS } from './shared/rules.js';
 import { PROVIDER_CHOICE, FCSR_EXPLAINER } from './shared/messages.js';
@@ -29,7 +28,7 @@ export function mountPublic(el, opts = {}) {
           </div>
           <ul class="pl-pills"><li>${ICON.check} No cost to ask</li><li>${ICON.check} No obligation</li><li>${ICON.check} You choose who to hire</li></ul>
         </div>
-        <div class="pl-hero-card" aria-hidden="true">${sampleCard(SAMPLES[0], true)}</div>
+        <figure class="pl-hero-photo"><img src="assets/scenes/kitchen.jpg" alt="A caregiver and an older woman laughing together over coffee at a kitchen table" width="1200" height="800"></figure>
       </div></section>
 
       <section class="pl-sec"><div class="pl-in">
@@ -64,6 +63,22 @@ export function mountPublic(el, opts = {}) {
           <li><b>Medicaid pays for the hours.</b><span>The state decides how many hours you can have. You don't pay the caregiver out of pocket.</span></li>
           <li><b>We handle the paperwork.</b><span>Caring Companions CDS runs payroll and taxes for your caregiver and helps with the program forms.</span></li>
         </ul>
+        <div class="cm-card pl-tasks">
+          <h3>What a CDS caregiver helps with</h3>
+          <p class="cm-sub">Hands-on help at home, from the state's list of CDS personal care tasks:</p>
+          <ul class="pl-tasklist">
+            <li>${ICON.check} Bathing and showering</li>
+            <li>${ICON.check} Dressing and grooming: hair, teeth, shaving and nails</li>
+            <li>${ICON.check} Using the bathroom and incontinence care</li>
+            <li>${ICON.check} Cooking meals, help eating, and cleanup</li>
+            <li>${ICON.check} Getting around the house, in and out of bed or a chair</li>
+            <li>${ICON.check} Help taking their own medicine, like opening bottles</li>
+            <li>${ICON.check} Making the bed, changing sheets and their laundry</li>
+            <li>${ICON.check} Shopping for what they need</li>
+            <li>${ICON.check} Rides for essential shopping, errands, school or work</li>
+          </ul>
+          <p class="cm-small"><b>Not part of CDS:</b> standing by or reminders only, waiting at appointments, nursing care, and housework for the rest of the household. The state decides which of these tasks and how many hours each person gets.</p>
+        </div>
       </div></section>
 
       <section class="pl-sec"><div class="pl-in">
@@ -73,10 +88,10 @@ export function mountPublic(el, opts = {}) {
           <li><span class="n">2</span><b>Meet caregivers near you.</b><span>See their profiles and, for many, a short intro video. Meet by live video or in person. Meeting doesn't commit you or the caregiver.</span></li>
           <li><span class="n">3</span><b>Choose who you'd like to hire.</b><span>You're the employer, so the choice is yours. We help with the paperwork to get started.</span></li>
         </ol>
-        <div class="pl-head" style="margin-top:30px"><h3>What a caregiver profile looks like</h3></div>
-        <div class="pl-samples" id="samples" aria-label="Sample caregiver profiles">${SAMPLES.map(x => sampleCard(x, false)).join('')}</div>
-        <div class="pl-dots" id="dots" aria-hidden="true">${SAMPLES.map((x, i) => `<span class="${i === 0 ? 'on' : ''}"></span>`).join('')}<em>Swipe to see more</em></div>
-        <p class="cm-small pl-note">Examples with sample photos, not real caregivers. Real profiles are shared privately with the families we're helping.</p>
+        <div class="pl-scenes">
+          <figure><img src="assets/scenes/porch.jpg" alt="A young caregiver steadying an older man with a cane on his porch steps" width="1200" height="800" loading="lazy"><figcaption>A steady arm on the porch steps</figcaption></figure>
+          <figure><img src="assets/scenes/album.jpg" alt="A caregiver and an older woman in a wheelchair looking through a photo album" width="1200" height="800" loading="lazy"><figcaption>Help at home with the everyday things</figcaption></figure>
+        </div>
         <div class="cm-card pl-countcard" id="countcard" hidden>
           <h3>Caregivers ready to meet families now</h3>
           <div class="cm-counts" id="counts"></div>
@@ -156,15 +171,6 @@ export function mountPublic(el, opts = {}) {
     const toReq = e => { e.preventDefault(); $('#req', el).scrollIntoView({ behavior: 'smooth' }); setTimeout(() => $('#fn', el).focus({ preventScroll: true }), 500); };
     $('#cta', el).onclick = toReq;
     $$('[data-req]', el).forEach(a => a.onclick = toReq);
-    // Dots follow the swipe position on phones.
-    const sc = $('#samples', el), dots = $$('#dots span', el);
-    sc.addEventListener('scroll', () => {
-      const cards = Array.from(sc.children), mid = sc.scrollLeft + sc.clientWidth / 2;
-      let best = 0, bd = Infinity;
-      cards.forEach((c, i) => { const d = Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid); if (d < bd) { bd = d; best = i; } });
-      dots.forEach((d, i) => d.classList.toggle('on', i === best));
-      if (sc.scrollLeft > 20) $('#dots em', el).hidden = true;
-    }, { passive: true });
     let followup = null;
     $('#rf', el).onsubmit = async e => {
       e.preventDefault();
@@ -179,15 +185,6 @@ export function mountPublic(el, opts = {}) {
       $('#step2', el).hidden = true; $('#step3', el).hidden = false;
     };
     $('#skip', el).onclick = () => { $('#step2', el).hidden = true; $('#step3', el).hidden = false; };
-  }
-
-  function sampleCard(x, big) {
-    return `<article class="pl-card ${big ? 'big' : ''}">
-      <div class="pl-photo">${x.photo ? `<img src="${esc(x.photo)}" alt="Sample photo for the example profile ${esc(x.name)}" loading="lazy">` : x.svg}${x.video ? `<span class="pl-play">${ICON.video} Intro video</span>` : ''}<span class="pl-sample">Sample profile</span></div>
-      <div class="pl-body"><div class="cm-row between"><strong>${esc(x.name)}</strong><span class="cm-pill ok">${ICON.shield} Screening complete</span></div>
-        <span class="cm-small">${esc(x.town)} · ${esc(x.when)} · ${esc(x.hours)}</span>
-        <p class="pl-q">"${esc(x.quote)}"</p></div>
-    </article>`;
   }
 
   // P3: Join our caregiver list. Wording approved by Samantha 2026-10-16.
@@ -212,7 +209,21 @@ export function mountPublic(el, opts = {}) {
         <p class="cm-sub" style="margin-top:10px">It takes about a minute. Then you'll build your profile, and you can stop and come back any time. It doesn't commit you to anything, and you can say no to any family.</p>
       </div>
       <div class="cm-card tint" id="jpay"><div><strong style="font-size:1.5rem;color:var(--navy)">$15 to $16 per hour</strong></div><p class="cm-small" style="margin:0">Paid weekly, every Thursday, by direct deposit or pay card.</p></div>
-      <div class="cm-card flat" id="jhow"><p style="margin:0"><strong>How CDS works:</strong> the family is your employer. They choose, hire and supervise you. Caring Companions CDS handles payroll, taxes and the program paperwork, and we help with introductions.</p></div>
+      <div class="cm-card flat" id="jhow"><p style="margin:0"><strong>How CDS works:</strong> the family is your employer. They choose, hire and supervise you. Caring Companions CDS handles payroll, taxes and the program paperwork, and we help with introductions.</p>
+        <details class="pl-jobdetails"><summary>What the job involves</summary>
+          <ul class="pl-tasklist">
+            <li>${ICON.check} Bathing and showering</li>
+            <li>${ICON.check} Dressing and grooming: hair, teeth, shaving and nails</li>
+            <li>${ICON.check} Using the bathroom and incontinence care</li>
+            <li>${ICON.check} Cooking meals, help eating, and cleanup</li>
+            <li>${ICON.check} Getting around the house, in and out of bed or a chair</li>
+            <li>${ICON.check} Help taking their own medicine, like opening bottles</li>
+            <li>${ICON.check} Making the bed, changing sheets and their laundry</li>
+            <li>${ICON.check} Shopping for what they need</li>
+            <li>${ICON.check} Rides for essential shopping, errands, school or work</li>
+          </ul>
+          <p class="cm-small" style="margin:0">Hands-on help only. CDS doesn't pay for standing by, reminders only, waiting at appointments, or nursing care.</p>
+        </details></div>
       <form id="jf" class="cm-card" novalidate>
         <h2>About you</h2>
         <div class="cm-grid2">

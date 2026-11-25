@@ -311,7 +311,7 @@ export function mountCaregiver(el, opts = {}) {
       section: d.listing_text.includes('complete') ? 'complete' : 'not_listed', availability: d.availability, hours_min: d.hours_min, hours_max: d.hours_max,
       confirmed_text: d.availability_confirmed_text, accepting: d.accepting_intros && !d.paused,
       about_me: p.about_me, enjoy_most: p.enjoy_most, interests: p.interests, setting_pref: p.setting_pref, experience: p.experience,
-      help_types: (p.help_types || []).map(h => HELP_TYPES[h]), languages: p.languages || [], has_car: !!p.has_car, travel_miles: p.travel_miles,
+      help_types: (p.help_types || []).filter(h => HELP_TYPES[h]).map(h => HELP_TYPES[h]), languages: p.languages || [], has_car: !!p.has_car, travel_miles: p.travel_miles,
       certs_verified: (p.certs || []).filter(x => (d.verified_certs || []).includes(x)),
       certs_pending: (p.certs || []).filter(x => !(d.verified_certs || []).includes(x)), current_cds_hours: !!p.current_cds_hours,
     };
