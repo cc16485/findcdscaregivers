@@ -55,7 +55,7 @@ export function mountPublic(el, opts = {}) {
             <ul class="pl-ticks">
               <li>${ICON.check} $15 to $16 an hour, paid every Thursday</li>
               <li>${ICON.check} Full time, part time or fill-in, close to home</li>
-              <li>${ICON.check} Already caring for a parent or friend? You may be able to get paid for it</li>
+              <li>${ICON.check} Know someone who needs help at home? We help them sign up for CDS, and they can hire you</li>
             </ul>
             <a class="cm-btn block" href="caregivers/">Join our caregiver list</a>
           </div>
@@ -155,7 +155,7 @@ export function mountPublic(el, opts = {}) {
             <li>${ICON.check} Families also need backup caregivers for sick days, so even a few shifts a month helps</li>
             <li>${ICON.check} You say yes or no to every family</li>
             <li>${ICON.check} No experience? Many great caregivers started with their own family</li>
-            <li>${ICON.check} Already caring for someone? They may be able to hire you through CDS</li>
+            <li>${ICON.check} Know someone who needs help at home, like a parent, neighbor, or someone from church or work? Many people qualify for CDS and don't know it. We help them sign up, and they can hire you</li>
           </ul>
           <a class="cm-btn honey pl-big" href="caregivers/">Join our caregiver list</a>
           <p class="cm-small" style="margin-top:10px">Takes about a minute. Missouri requires every CDS caregiver to register with the Family Care Safety Registry (one-time $16 state fee, $16.57 online, none if you're already registered). We walk you through it.</p>
@@ -239,6 +239,10 @@ export function mountPublic(el, opts = {}) {
           </ul>
           <p class="cm-small" style="margin:0">Hands-on help only. CDS doesn't pay for standing by, reminders only, waiting at appointments, or nursing care.</p>
         </details></div>
+      <div class="cm-card tint" id="jknow"><h2 style="margin:0">Know someone who needs help at home?</h2>
+        <p style="margin:0">Many people already know someone who qualifies for CDS and doesn't know it: a parent or grandparent, a neighbor, or someone from church, work or the community. If they have Missouri Medicaid and need help with things like bathing, dressing or meals, we can help them sign up for CDS. Then they can hire you, and you have someone to work for.</p>
+        <p class="cm-small" style="margin:0">Tell us about them below, or call 417-218-2888 and we'll take it from there. It's the fastest way to start working.</p>
+      </div>
       <form id="jf" class="cm-card" novalidate>
         <h2>About you</h2>
         <div class="cm-grid2">
@@ -256,13 +260,13 @@ export function mountPublic(el, opts = {}) {
         <p class="cm-small" style="margin:0">Tap every county you would work in.</p>
         ${chips('jco', COUNTIES)}
 
-        <h2>Do you already have someone you would care for?</h2>
-        <p class="cm-small" style="margin:0">Many people come to us because there's someone they already look after. If that's you, we can usually move much faster.</p>
-        ${radios('jhas', [['Yes', 'Yes, I have someone'], ['No', 'No, I am looking for work'], ['Not sure', 'Not sure yet']])}
+        <h2>Do you know someone who needs help at home?</h2>
+        <p class="cm-small" style="margin:0">Family, a neighbor, or someone from church or work. If they could use help at home, we can check if they qualify for CDS and help them sign up. That's usually the fastest way to start working.</p>
+        ${radios('jhas', [['Yes', 'Yes, I know someone'], ['No', 'No, I am looking for work'], ['Not sure', 'Not sure yet']])}
         <div id="jhasMore" hidden><div style="display:grid;gap:12px">
           <div class="cm-field"><label for="jcn">Their first name <span class="cm-muted">(optional)</span></label><input id="jcn"></div>
           <div class="cm-grid2">
-            <div class="cm-field"><label for="jcr">They are your</label>${sel('jcr', ['Parent', 'Grandparent', 'Adult child', 'Brother or sister', 'Other relative', 'Friend', 'Neighbor', 'No relation'])}</div>
+            <div class="cm-field"><label for="jcr">They are your</label>${sel('jcr', ['Parent', 'Grandparent', 'Adult child', 'Brother or sister', 'Other relative', 'Friend', 'Neighbor', 'Someone from church or community', 'Coworker', 'No relation'])}</div>
             <div class="cm-field"><label for="jcm">Do they have Missouri Medicaid?</label>${sel('jcm', ['Yes, active Medicaid', 'Not sure', 'No'])}</div>
           </div>
           <p class="cm-small" style="margin:0">You cannot be paid to care for your husband or wife, or for someone whose legal guardian you are. That is a state rule. Everyone else is fine.</p>
@@ -334,7 +338,7 @@ export function mountPublic(el, opts = {}) {
       if (!$('#jln', el).value.trim()) problems.push('your last name');
       if (!usePhoneOnFile && $('#jph', el).value.replace(/\D/g, '').length !== 10) problems.push('a 10-digit phone number');
       if (!picked('jco').length) problems.push('at least one county');
-      if (!radio('jhas')) problems.push('whether you already have someone to care for');
+      if (!radio('jhas')) problems.push('whether you know someone who needs help at home');
       if (!$('#jbg', el).checked) problems.push('the state screening checkbox');
       if (problems.length) {
         err.textContent = 'Please add ' + problems.join(', ').replace(/, ([^,]*)$/, ' and $1') + '.';
