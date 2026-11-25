@@ -359,3 +359,6 @@
 .cg-how li{display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:start}
 .cg-how-n{width:36px;height:36px;border-radius:50%;background:var(--navy);color:#fff;font-weight:700;display:grid;place-items:center}
 .cg-how b{color:var(--navy)}
+
+/* "Use a different number" on a former caregiver's personal sign-up link (2026-11-24) */
+.cm-link { background: none; border: 0; padding: 0; font: inherit; color: var(--navy); text-decoration: underline; cursor: pointer; }
