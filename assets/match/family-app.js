@@ -3,7 +3,7 @@ import { api, store, familySessionKey, MODE } from './api.js';
 import { esc, $, $$, act, toast, fmtDate, fmtWhen, videoHtml, ICON } from './ui.js';
 import { COUNTIES, HELP_TYPES, PART_LABEL, DAYS, DAY_LABEL, PARTS } from './shared/rules.js';
 import { PROVIDER_CHOICE } from './shared/messages.js';
-import { profileHtml, weekGrid } from './profile-view.js';
+import { profileHtml, weekGrid, contactHtml } from './profile-view.js';
 
 export function mountFamily(el, opts = {}) {
   AB = opts.assetBase || '';
@@ -211,6 +211,7 @@ export function mountFamily(el, opts = {}) {
       <div class="fam-body">
         <div class="cm-row between"><strong>${esc(c.first_name)}</strong>${badge(c.section)}</div>
         <span class="cm-small">${ICON.pin} ${esc(c.town)} · confirmed ${esc(c.confirmed_text)}</span>
+        ${c.direct_contact ? `<span class="fam-direct">${ICON.phone} Call or text directly</span>` : ''}
         <span class="fam-when">${esc(c.availability_text)}${c.hours_min ? ' · ' + c.hours_min + ' to ' + c.hours_max + ' hrs/week' : ''}</span>
         ${c.quote ? `<p class="fam-q">"${esc(c.quote)}"</p>` : ''}
         ${useNeeds && m.total ? `<div class="fam-fit"><div class="fam-fit-h"><b>Fits ${m.matched} of ${m.total} of your needs</b><span class="fam-bar"><i style="width:${Math.round(m.matched / m.total * 100)}%"></i></span></div>
@@ -282,6 +283,7 @@ export function mountFamily(el, opts = {}) {
     const c = r.caregiver;
     const cta = (r.open_request
       ? `<div class="cm-card tint"><p class="cm-sub">You asked to meet ${esc(c.first_name)}. Status: <b>${esc(r.open_request)}</b>.</p><button class="cm-btn ghost seeReq">See My requests</button></div>`
+      : c.contact ? contactHtml(c)
       : `<button class="cm-btn honey block pv-meet">I'd like to meet ${esc(c.first_name)}</button>`) + heart(c.id, r.saved, true);
     $('#view', el).innerHTML = `<div class="cm-stack">
       <button class="cm-back" id="back">${ICON.back} Back</button>

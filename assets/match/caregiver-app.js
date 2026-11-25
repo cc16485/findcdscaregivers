@@ -3,7 +3,7 @@ import { api, MODE, uploadFile } from './api.js';
 import { esc, $, $$, act, toast, fileToDataUrl, shrinkPhoto, fmtWhen, videoHtml, ICON } from './ui.js';
 import { COUNTIES, HELP_TYPES, DAYS, DAY_LABEL, PARTS, PART_LABEL } from './shared/rules.js';
 import { FCSR_HOWTO_URL, FCSR_PHONE } from './shared/messages.js';
-import { profileHtml } from './profile-view.js';
+import { profileHtml, contactHtml } from './profile-view.js';
 
 const PROMPTS = [
   'Tell us a little about yourself.',
@@ -314,14 +314,17 @@ export function mountCaregiver(el, opts = {}) {
       help_types: (p.help_types || []).filter(h => HELP_TYPES[h]).map(h => HELP_TYPES[h]), languages: p.languages || [], has_car: !!p.has_car, travel_miles: p.travel_miles,
       certs_verified: (p.certs || []).filter(x => (d.verified_certs || []).includes(x)),
       certs_pending: (p.certs || []).filter(x => !(d.verified_certs || []).includes(x)), current_cds_hours: !!p.current_cds_hours,
+      contact: d.consents.contact ? d.contact_preview : null,
     };
     v.innerHTML = `<div class="cm-stack">${back()}
       <h1>See what families see</h1>
       <p class="cm-sub">This is exactly how your profile will look to invited families once our office approves it. Changes to your words, photo or video are reviewed first. Days and times update right away.</p>
-      <div class="cg-preview"><span class="cg-preview-tag">Preview</span>${profileHtml(preview, { preview: true, cta: `<button class="cm-btn honey block" disabled>Families tap here to ask to meet you</button>` })}</div>
+      <div class="cg-preview"><span class="cg-preview-tag">Preview</span>${profileHtml(preview, { preview: true, cta: preview.contact ? contactHtml(preview) : `<button class="cm-btn honey block" disabled>Families tap here to ask to meet you</button>` })}</div>
       <div class="cm-row cm-wrap"><button class="cm-btn ghost" data-go="profile">Edit my words</button><button class="cm-btn ghost" data-go="photo">Change photo</button><button class="cm-btn ghost" data-go="availability">Change days and times</button></div>
       <div class="cm-card">
         <label class="cm-check"><input type="checkbox" id="pc" ${d.consents.profile ? 'checked disabled' : ''}> ${esc(d.consent_wording.profile.text)}</label>
+        ${d.consent_wording.contact && d.contact_preview ? `<label class="cm-check"><input type="checkbox" id="cc" ${d.consents.contact ? 'checked' : ''}> <span><b>Let families contact me directly.</b> ${esc(d.consent_wording.contact.text)}</span></label>
+        <p class="cm-small" style="margin:0">${d.consents.contact ? 'Families see your number and email. Uncheck any time to stop.' : 'If you leave this off, families ask through our office and we text you.'}</p>` : ''}
         <button class="cm-btn block" id="submit" ${d.review_status === 'approved' ? 'disabled' : ''}>${d.review_status === 'submitted' ? 'Sent for review' : d.review_status === 'approved' ? (d.listing_text.includes('complete') ? 'Approved. Families can see this.' : 'Approved. Families see it once your screening is complete.') : 'Send to our office for review'}</button>
       </div>
       <div class="cm-card flat">
@@ -334,6 +337,13 @@ export function mountCaregiver(el, opts = {}) {
     </div>`;
     $('#pauseBtn', v).onclick = async e => { await act(e.currentTarget, () => call('setPaused', { paused: d.accepting_intros && !d.paused }), d.accepting_intros && !d.paused ? 'Introductions paused. Your profile is kept.' : 'You\'re accepting introductions again.'); go('consent'); };
     wireBack(v);
+    if ($('#cc', v)) $('#cc', v).onchange = async e => {
+      const box = e.currentTarget, on = box.checked;
+      box.disabled = true;
+      try { await act(null, () => call(on ? 'giveConsent' : 'withdrawConsent', { kind: 'contact' }), on ? 'Families can now call, text or email you.' : 'Your phone and email are hidden again.'); }
+      catch (err) { box.checked = !on; box.disabled = false; return; }
+      d.consents.contact = on; go('consent');
+    };
     $('#submit', v).onclick = async e => {
       await act(e.currentTarget, async () => { if (!d.consents.profile) { if (!$('#pc', v).checked) throw new Error('Please check the box to agree to be listed.'); await call('giveConsent', { kind: 'profile' }); } await call('submitForReview'); }, 'Sent! Our office will review it soon.');
       go('home');

@@ -221,10 +221,10 @@ export function mountPublic(el, opts = {}) {
         <ol style="margin:0;padding-left:1.3em;display:grid;gap:6px">
           <li>You make a short profile: a photo, a few words about you, and the days you can work.</li>
           <li>Families near you look through the directory and find you, whether they need a main caregiver or a backup for days theirs is sick or can't work.</li>
-          <li>When a family would like to meet you, they ask in the directory and we text you. You say yes or no.</li>
+          <li>When a family would like to meet you, they call or text you directly to set up an interview, if you choose to share your number. Or they ask us and we text you.</li>
           <li>If it's a fit, the family hires you. The family is your employer, and Caring Companions CDS handles payroll, taxes and the paperwork.</li>
         </ol>
-        <p class="cm-small" style="margin:0">Your last name, phone number and address stay private. <a href="/" target="_blank" rel="noopener">See the directory families use</a></p>
+        <p class="cm-small" style="margin:0">Your address and last name stay private. Your phone and email are shown only to signed-in families, and only if you say yes. <a href="/" target="_blank" rel="noopener">See the directory families use</a></p>
         <details class="pl-jobdetails"><summary>What the job involves</summary>
           <ul class="pl-tasklist">
             <li>${ICON.check} Bathing and showering</li>
@@ -271,7 +271,7 @@ export function mountPublic(el, opts = {}) {
         <label class="cm-check" id="jbgw" style="margin-top:6px"><input type="checkbox" id="jbg"> <span>I understand Missouri requires every CDS caregiver to register with the Family Care Safety Registry (FCSR) and pass the state's screening, and I'm willing to do it. If I'm not registered yet, the one-time state fee is $16 ($16.57 online). If I already am, I don't pay again.</span></label>
         <input id="jweb" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px">
 
-        <p class="cm-small" style="margin:0">Next you'll add a photo, your days and times, and your experience to your profile. Families see only your first name, photo, town, availability and your own words, never your last name, phone or address. Please don't put your Social Security number here.</p>
+        <p class="cm-small" style="margin:0">Next you'll add a photo, your days and times, and your experience to your profile. Families see your first name, photo, town, availability and your own words. They see your phone and email only if you choose to share them, and never your last name or address. Please don't put your Social Security number here.</p>
         <p class="cm-small" id="jerr" role="alert" style="margin:0;color:var(--bad);font-weight:600" hidden></p>
         <button class="cm-btn honey block" type="submit">Join and build my profile</button>
         <p class="cm-small" style="margin:0;text-align:center">Questions? Call 417-218-2888, or toll free 866-863-5151, Monday to Friday 9am to 4pm.</p>
@@ -284,7 +284,7 @@ export function mountPublic(el, opts = {}) {
           <li>Someone from our office calls or texts you to say hello and answer your questions.</li>
           <li>We send your private link to build your profile: a photo, a few words about you, your availability, and an optional short intro video.</li>
           <li>We walk you through the state screening.</li>
-          <li>After we review your profile, invited families near you can see it and ask to meet you. You say yes or no to every request.</li>
+          <li>After we review your profile, invited families near you can see it and reach out to set up an interview. You decide if it's a fit.</li>
         </ol>
         <p style="margin:0">There's nothing else you need to do right now.</p>
         <p class="cm-small" style="margin:0">Need us before then? Call 417-218-2888, or toll free 866-863-5151.</p>
