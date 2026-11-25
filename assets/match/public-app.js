@@ -13,7 +13,6 @@ export function mountPublic(el, opts = {}) {
   ({ landing, join })[view]();
 
   async function landing() {
-    const showIhs = IHS_SECTION_APPROVED || MODE === 'practice';
     el.innerHTML = `<div class="pl">
       <header class="pl-top"><div class="pl-in pl-top-in">
         <img src="${esc(opts.logo || 'assets/logo.png')}" alt="Caring Companions Consumer Directed Services" class="pl-logo" width="770" height="206">
@@ -21,54 +20,75 @@ export function mountPublic(el, opts = {}) {
       </div></header>
       <section class="pl-hero"><div class="pl-in pl-hero-grid">
         <div class="pl-hero-text">
-          <h1>Find a caregiver. Find your fit.</h1>
-          <p class="pl-lede">Discover potential caregivers, watch introduction videos, and meet someone before deciding whether CDS is right for you.</p>
+          <p class="pl-eyebrow">Find CDS Caregivers · a service of Caring Companions CDS</p>
+          <h1>Need care at home, but no one to hire? We'll help you find a caregiver.</h1>
+          <p class="pl-lede">Missouri's Consumer Directed Services (CDS) program lets you hire your own caregiver for care at home, paid through Medicaid. Many families never get started because they don't have someone in mind. We connect families in 27 Southwest Missouri counties with caregivers who want the work.</p>
           <div class="pl-cta">
-            <a class="cm-btn honey pl-big" href="#req" id="cta">Explore Our Private Caregiver Network</a>
-            <span class="pl-call">Or call us: <b>417-218-2888</b> · toll free <b>866-863-5151</b></span>
+            <a class="cm-btn honey pl-big" href="#req" id="cta">Help me find a caregiver</a>
+            <a class="cm-btn pl-big pl-ghost-light" href="caregivers/">I want caregiving work</a>
           </div>
-          <ul class="pl-pills"><li>${ICON.check} Free to look</li><li>${ICON.check} No obligation</li><li>${ICON.check} You choose who to hire</li></ul>
+          <ul class="pl-pills"><li>${ICON.check} No cost to ask</li><li>${ICON.check} No obligation</li><li>${ICON.check} You choose who to hire</li></ul>
         </div>
         <div class="pl-hero-card" aria-hidden="true">${sampleCard(SAMPLES[0], true)}</div>
       </div></section>
 
       <section class="pl-sec"><div class="pl-in">
-        <div class="pl-head"><h2>Meet caregivers who may be a great fit</h2>
-          <p class="cm-sub">Every caregiver has a profile in their own words, their general availability, and many have a short intro video.</p></div>
-        <div class="pl-samples" id="samples" aria-label="Sample caregiver profiles">${SAMPLES.map(x => sampleCard(x, false)).join('')}</div>
-        <div class="pl-dots" id="dots" aria-hidden="true">${SAMPLES.map((x, i) => `<span class="${i === 0 ? 'on' : ''}"></span>`).join('')}<em>Swipe to see more</em></div>
-        <p class="cm-small pl-note">Illustrative examples with sample photos, not real caregivers. Real caregiver profiles are available by private invitation.</p>
-        <div class="pl-after"><a class="cm-btn honey pl-big" href="#req" data-req>Request Your Private Invitation</a></div>
+        <div class="pl-head"><h2>Two ways to use Find CDS Caregivers</h2></div>
+        <div class="pl-doors">
+          <div class="cm-card pl-door">
+            <h3>I need a caregiver</h3>
+            <ul class="pl-ticks">
+              <li>${ICON.check} For you or someone you love, at home</li>
+              <li>${ICON.check} We help you meet caregivers near you</li>
+              <li>${ICON.check} You choose who to hire, and you can say no as often as you need</li>
+            </ul>
+            <a class="cm-btn honey block" href="#req" data-req>Help me find a caregiver</a>
+          </div>
+          <div class="cm-card pl-door">
+            <h3>I want caregiving work</h3>
+            <ul class="pl-ticks">
+              <li>${ICON.check} $15 to $16 an hour, paid every Thursday</li>
+              <li>${ICON.check} Full time, part time or fill-in, close to home</li>
+              <li>${ICON.check} Already caring for a parent or friend? You may be able to get paid for it</li>
+            </ul>
+            <a class="cm-btn block" href="caregivers/">Join our caregiver list</a>
+          </div>
+        </div>
       </div></section>
 
       <section class="pl-sec pl-tint"><div class="pl-in">
-        <div class="pl-head"><h2>How it works</h2></div>
-        <ol class="pl-steps">
-          <li><span class="n">1</span><b>Tell us what you're looking for.</b><span>A short call about the help you need and how CDS works, including what you're responsible for as the employer. With your permission, we also check your Missouri Medicaid coverage.</span></li>
-          <li><span class="n">2</span><b>Browse caregiver profiles and optional videos.</b><span>Your private invitation opens the directory on your phone or computer.</span></li>
-          <li><span class="n">3</span><b>Request an introduction and decide who you'd like to hire.</b><span>Meet by live video or in person. Meeting doesn't commit you or the caregiver.</span></li>
-        </ol>
+        <div class="pl-head"><h2>What is CDS?</h2>
+          <p class="cm-sub">Consumer Directed Services is a Missouri Medicaid program for people who need help at home with everyday things like bathing, meals and getting around.</p></div>
+        <ul class="pl-facts">
+          <li><b>You choose your caregiver.</b><span>You hire the person you want: someone we help you meet, or a friend or relative. (A husband or wife, or a legal guardian, can't be the paid caregiver.)</span></li>
+          <li><b>Medicaid pays for the hours.</b><span>The state decides how many hours you can have. You don't pay the caregiver out of pocket.</span></li>
+          <li><b>We handle the paperwork.</b><span>Caring Companions CDS runs payroll and taxes for your caregiver and helps with the program forms.</span></li>
+        </ul>
       </div></section>
 
-      <section class="pl-sec"><div class="pl-in pl-two">
-        ${showIhs ? `<div class="cm-card pl-ihs">
-          ${IHS_SECTION_APPROVED ? '' : '<span class="cm-pill prog">Practice only: held until the legal review is done</span>'}
-          <h2>Already receiving in-home care?</h2>
-          <p class="cm-sub">You can explore potential caregivers before deciding whether to pursue CDS. Browsing doesn't change your existing services.</p>
-          <p class="cm-sub">If you do decide to make a change, it goes through the Division of Senior and Disability Services, and your current services continue until new services are authorized. You can choose any CDS provider.</p>
-        </div>` : ''}
-        <div class="cm-card">
-          <h2>Caregivers ready to meet families in your area</h2>
-          <div class="cm-counts" id="counts"><span class="cm-muted">Loading…</span></div>
-          <p class="cm-small">Counted live from our records: caregivers whose state screening is fully verified, who are accepting new introductions, and who have confirmed their availability in the last 45 days. Profiles are shared only with invited families.</p>
+      <section class="pl-sec"><div class="pl-in">
+        <div class="pl-head"><h2>How we help families find a caregiver</h2></div>
+        <ol class="pl-steps">
+          <li><span class="n">1</span><b>Tell us what you need.</b><span>A short call about the help you need and how CDS works, including what you're responsible for as the employer. With your permission, we also check your Missouri Medicaid coverage.</span></li>
+          <li><span class="n">2</span><b>Meet caregivers near you.</b><span>See their profiles and, for many, a short intro video. Meet by live video or in person. Meeting doesn't commit you or the caregiver.</span></li>
+          <li><span class="n">3</span><b>Choose who you'd like to hire.</b><span>You're the employer, so the choice is yours. We help with the paperwork to get started.</span></li>
+        </ol>
+        <div class="pl-head" style="margin-top:30px"><h3>What a caregiver profile looks like</h3></div>
+        <div class="pl-samples" id="samples" aria-label="Sample caregiver profiles">${SAMPLES.map(x => sampleCard(x, false)).join('')}</div>
+        <div class="pl-dots" id="dots" aria-hidden="true">${SAMPLES.map((x, i) => `<span class="${i === 0 ? 'on' : ''}"></span>`).join('')}<em>Swipe to see more</em></div>
+        <p class="cm-small pl-note">Examples with sample photos, not real caregivers. Real profiles are shared privately with the families we're helping.</p>
+        <div class="cm-card pl-countcard" id="countcard" hidden>
+          <h3>Caregivers ready to meet families now</h3>
+          <div class="cm-counts" id="counts"></div>
+          <p class="cm-small">Counted live: caregivers whose state screening is complete, who are accepting new families, and who confirmed their availability in the last 45 days.</p>
         </div>
       </div></section>
 
       <section class="pl-sec pl-tint" id="req"><div class="pl-in pl-formwrap">
         <div class="cm-card pl-form">
           <div id="step1">
-            <h2>Request your private invitation</h2>
-            <p class="cm-sub">Three quick questions. We'll call you, answer your questions, check your Medicaid coverage with your permission, and then send your personal invitation.</p>
+            <h2>Help me find a caregiver</h2>
+            <p class="cm-sub">Three quick questions. We'll call you, answer your questions, and with your permission check your Medicaid coverage. Then we help you meet caregivers near you.</p>
             <form id="rf" novalidate class="cm-stack">
               <div class="cm-grid2">
                 <div class="cm-field"><label for="fn">First name</label><input id="fn" autocomplete="given-name" required></div>
@@ -82,8 +102,8 @@ export function mountPublic(el, opts = {}) {
                 <div class="cm-chips">${Object.entries(PROGRAMS).map(([k, l]) => `<label class="pl-radio"><input type="radio" name="prog" value="${k}"><span>${esc(l)}</span></label>`).join('')}</div>
               </fieldset>
               <div style="position:absolute;left:-9999px" aria-hidden="true"><label for="website">Website</label><input id="website" tabindex="-1" autocomplete="off"></div>
-              <button class="cm-btn block pl-big" type="submit">Request my invitation</button>
-              <p class="cm-small">Free, and no obligation. You don't have to switch programs or choose us to look.</p>
+              <button class="cm-btn block pl-big" type="submit">Call me about a caregiver</button>
+              <p class="cm-small">No cost and no obligation. You don't have to switch programs or choose us to ask.</p>
             </form>
           </div>
           <div id="step2" hidden class="cm-stack">
@@ -99,29 +119,40 @@ export function mountPublic(el, opts = {}) {
             </div>
             <div class="cm-row cm-wrap"><button class="cm-btn" id="more">Save these details</button><button class="cm-btn quiet" id="skip">Skip</button></div>
           </div>
-          <div id="step3" hidden class="cm-stack"><h2>You're all set</h2><p class="cm-sub">We'll call you soon to talk about CDS and, with your permission, check your Medicaid coverage. Browsing caregivers doesn't commit you to anything. Questions before then? Call 417-218-2888 (toll free 866-863-5151), Monday to Friday.</p></div>
+          <div id="step3" hidden class="cm-stack"><h2>You're all set</h2><p class="cm-sub">We'll call you soon to talk about CDS and, with your permission, check your Medicaid coverage. Asking doesn't commit you to anything. Questions before then? Call 417-218-2888 (toll free 866-863-5151), Monday to Friday.</p></div>
         </div>
       </div></section>
 
-      <section class="pl-sec"><div class="pl-in pl-two">
-        <div class="cm-card flat pl-choose">
-          <h2>You choose. You hire. We help with introductions.</h2>
-          <p class="cm-sub">With CDS, you're the employer: you choose, hire, train and supervise your caregiver. Caring Companions CDS helps you meet caregivers and handles the program paperwork. We don't assign caregivers or guarantee a match.</p>
-          <p class="cm-sub">The directory is a service of Caring Companions CDS. You're welcome to look whether or not you choose us as your CDS agency.</p>
+      <section class="pl-sec pl-cg" id="work"><div class="pl-in pl-two">
+        <div>
+          <h2>Get paid to care for people near you</h2>
+          <p class="cm-sub">Families across Southwest Missouri are looking for caregivers. With CDS, the family hires you directly, and Caring Companions CDS handles your pay.</p>
+          <ul class="pl-ticks">
+            <li>${ICON.check} $15 to $16 an hour, paid every Thursday by direct deposit or pay card</li>
+            <li>${ICON.check} Full time, part time, or a few fill-in shifts</li>
+            <li>${ICON.check} You say yes or no to every family</li>
+            <li>${ICON.check} No experience? Many great caregivers started with their own family</li>
+            <li>${ICON.check} Already caring for someone? They may be able to hire you through CDS</li>
+          </ul>
+          <a class="cm-btn honey pl-big" href="caregivers/">Join our caregiver list</a>
+          <p class="cm-small" style="margin-top:10px">Takes about a minute. Missouri requires every CDS caregiver to register with the Family Care Safety Registry (one-time $16 state fee, $16.57 online, none if you're already registered). We walk you through it.</p>
         </div>
-        <div class="cm-card pl-join">
-          <h2>Interested in becoming a CDS caregiver?</h2>
-          <p class="cm-sub">Join our caregiver network and earn $15 to $16 an hour, paid every Thursday. Missouri requires every CDS caregiver to register with the Family Care Safety Registry and pass the state's screening. Registration is a one-time $16 state fee ($16.57 online). If you're already registered, you don't pay again. We complete the screening and walk you through each step.</p>
-          <button class="cm-btn ghost" id="toJoin">Join our caregiver list</button>
+        <div class="cm-card flat pl-choose">
+          <h3>You choose. You hire. We help.</h3>
+          <p class="cm-sub">With CDS, the person getting care (or their family) is the employer: they choose, hire, train and supervise their caregiver. Caring Companions CDS helps families meet caregivers and handles payroll and program paperwork. We don't assign caregivers or guarantee a match.</p>
+          <p class="cm-sub">Find CDS Caregivers is a service of Caring Companions CDS. You're welcome to ask whether or not you choose us as your CDS agency.</p>
+          <p class="cm-small"><b>Counties we serve:</b> ${COUNTIES.join(', ')}.</p>
         </div>
       </div></section>
 
       <footer class="pl-foot"><div class="pl-in"><p>${esc(PROVIDER_CHOICE)}</p></div></footer>
     </div>`;
     api('public', 'counts').then(r => {
-      const rows = Object.entries(r.counts).sort((a, b) => b[1] - a[1]);
-      $('#counts', el).innerHTML = rows.length ? rows.map(([c, n]) => `<div><span>${esc(c)} County</span><b>${n}</b></div>`).join('') : '<span class="cm-muted">Our network is growing. Call us about your county.</span>';
-    }).catch(() => { $('#counts', el).innerHTML = '<span class="cm-muted">Call us to ask about your county.</span>'; });
+      const rows = Object.entries(r.counts || {}).sort((a, b) => b[1] - a[1]);
+      if (!rows.length) return;
+      $('#counts', el).innerHTML = rows.map(([c, n]) => `<div><span>${esc(c)} County</span><b>${n}</b></div>`).join('');
+      $('#countcard', el).hidden = false;
+    }).catch(() => {});
     const toReq = e => { e.preventDefault(); $('#req', el).scrollIntoView({ behavior: 'smooth' }); setTimeout(() => $('#fn', el).focus({ preventScroll: true }), 500); };
     $('#cta', el).onclick = toReq;
     $$('[data-req]', el).forEach(a => a.onclick = toReq);
@@ -134,7 +165,6 @@ export function mountPublic(el, opts = {}) {
       dots.forEach((d, i) => d.classList.toggle('on', i === best));
       if (sc.scrollLeft > 20) $('#dots em', el).hidden = true;
     }, { passive: true });
-    $('#toJoin', el).onclick = () => (opts.onNavigate ? opts.onNavigate('join') : (location.href = 'caregivers/'));
     let followup = null;
     $('#rf', el).onsubmit = async e => {
       e.preventDefault();
