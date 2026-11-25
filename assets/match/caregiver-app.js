@@ -157,6 +157,7 @@ export function mountCaregiver(el, opts = {}) {
         <div class="cm-chips" id="certs">${[['cpr', 'CPR'], ['first_aid', 'First aid'], ['cna', 'CNA']].map(([k, l]) => `<button class="cm-chip" data-v="${k}" aria-pressed="${(p.certs || []).includes(k)}">${l}</button>`).join('')}</div>
         <div class="cm-field"><label for="languages">Languages I speak (optional)</label><input id="languages" value="${esc((p.languages || []).join(', '))}" placeholder="English, Spanish"></div>
         <label class="cm-check"><input type="checkbox" id="cds_hours" ${p.current_cds_hours ? 'checked' : ''}> I already work for a CDS consumer and want more hours</label>
+        <label class="cm-check"><input type="checkbox" id="worked_cc" ${d.worked_here_before ? 'checked' : ''}> I have worked for Caring Companions before</label>
       </div>
       <button class="cm-btn block" id="save">Save</button>
     </div>`;
@@ -167,7 +168,7 @@ export function mountCaregiver(el, opts = {}) {
       await act(e.currentTarget, () => call('saveProfile', { draft: {
         about_me: $('#about_me', v).value, enjoy_most: $('#enjoy_most', v).value, experience: $('#experience', v).value, interests: $('#interests', v).value,
         setting_pref: $('#setting_pref', v).value, town: $('#town', v).value, counties: picked('counties'), help_types: picked('help'), certs: picked('certs'),
-        languages: $('#languages', v).value.split(','), has_car: $('#has_car', v).checked, travel_miles: $('#miles', v).value, current_cds_hours: $('#cds_hours', v).checked } }), 'Saved.');
+        languages: $('#languages', v).value.split(','), has_car: $('#has_car', v).checked, travel_miles: $('#miles', v).value, current_cds_hours: $('#cds_hours', v).checked, worked_here_before: $('#worked_cc', v).checked } }), 'Saved.');
       go('home');
     };
   }
