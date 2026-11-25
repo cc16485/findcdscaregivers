@@ -2,7 +2,6 @@
 // Shows counts of fully screened caregivers by county. Never a person.
 import { api, joinCaregiverList, MODE } from './api.js';
 import { IHS_SECTION_APPROVED } from './mode.js';
-import { SAMPLES } from './samples.js';
 import { esc, $, $$, act, ICON } from './ui.js';
 import { COUNTIES, PROGRAMS, RELATIONSHIPS } from './shared/rules.js';
 import { PROVIDER_CHOICE, FCSR_EXPLAINER } from './shared/messages.js';
@@ -29,7 +28,7 @@ export function mountPublic(el, opts = {}) {
           </div>
           <ul class="pl-pills"><li>${ICON.check} No cost to ask</li><li>${ICON.check} No obligation</li><li>${ICON.check} You choose who to hire</li></ul>
         </div>
-        <div class="pl-hero-card" aria-hidden="true">${sampleCard(SAMPLES[0], true)}</div>
+        <figure class="pl-hero-photo"><img src="assets/scenes/kitchen.jpg" alt="A caregiver and an older woman laughing together over coffee at a kitchen table" width="1200" height="800"></figure>
       </div></section>
 
       <section class="pl-sec"><div class="pl-in">
@@ -73,10 +72,10 @@ export function mountPublic(el, opts = {}) {
           <li><span class="n">2</span><b>Meet caregivers near you.</b><span>See their profiles and, for many, a short intro video. Meet by live video or in person. Meeting doesn't commit you or the caregiver.</span></li>
           <li><span class="n">3</span><b>Choose who you'd like to hire.</b><span>You're the employer, so the choice is yours. We help with the paperwork to get started.</span></li>
         </ol>
-        <div class="pl-head" style="margin-top:30px"><h3>What a caregiver profile looks like</h3></div>
-        <div class="pl-samples" id="samples" aria-label="Sample caregiver profiles">${SAMPLES.map(x => sampleCard(x, false)).join('')}</div>
-        <div class="pl-dots" id="dots" aria-hidden="true">${SAMPLES.map((x, i) => `<span class="${i === 0 ? 'on' : ''}"></span>`).join('')}<em>Swipe to see more</em></div>
-        <p class="cm-small pl-note">Examples with sample photos, not real caregivers. Real profiles are shared privately with the families we're helping.</p>
+        <div class="pl-scenes">
+          <figure><img src="assets/scenes/porch.jpg" alt="A young caregiver steadying an older man with a cane on his porch steps" width="1200" height="800" loading="lazy"><figcaption>A steady arm on the porch steps</figcaption></figure>
+          <figure><img src="assets/scenes/album.jpg" alt="A caregiver and an older woman in a wheelchair looking through a photo album" width="1200" height="800" loading="lazy"><figcaption>Company, conversation and good days at home</figcaption></figure>
+        </div>
         <div class="cm-card pl-countcard" id="countcard" hidden>
           <h3>Caregivers ready to meet families now</h3>
           <div class="cm-counts" id="counts"></div>
@@ -156,15 +155,6 @@ export function mountPublic(el, opts = {}) {
     const toReq = e => { e.preventDefault(); $('#req', el).scrollIntoView({ behavior: 'smooth' }); setTimeout(() => $('#fn', el).focus({ preventScroll: true }), 500); };
     $('#cta', el).onclick = toReq;
     $$('[data-req]', el).forEach(a => a.onclick = toReq);
-    // Dots follow the swipe position on phones.
-    const sc = $('#samples', el), dots = $$('#dots span', el);
-    sc.addEventListener('scroll', () => {
-      const cards = Array.from(sc.children), mid = sc.scrollLeft + sc.clientWidth / 2;
-      let best = 0, bd = Infinity;
-      cards.forEach((c, i) => { const d = Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid); if (d < bd) { bd = d; best = i; } });
-      dots.forEach((d, i) => d.classList.toggle('on', i === best));
-      if (sc.scrollLeft > 20) $('#dots em', el).hidden = true;
-    }, { passive: true });
     let followup = null;
     $('#rf', el).onsubmit = async e => {
       e.preventDefault();
@@ -179,15 +169,6 @@ export function mountPublic(el, opts = {}) {
       $('#step2', el).hidden = true; $('#step3', el).hidden = false;
     };
     $('#skip', el).onclick = () => { $('#step2', el).hidden = true; $('#step3', el).hidden = false; };
-  }
-
-  function sampleCard(x, big) {
-    return `<article class="pl-card ${big ? 'big' : ''}">
-      <div class="pl-photo">${x.photo ? `<img src="${esc(x.photo)}" alt="Sample photo for the example profile ${esc(x.name)}" loading="lazy">` : x.svg}${x.video ? `<span class="pl-play">${ICON.video} Intro video</span>` : ''}<span class="pl-sample">Sample profile</span></div>
-      <div class="pl-body"><div class="cm-row between"><strong>${esc(x.name)}</strong><span class="cm-pill ok">${ICON.shield} Screening complete</span></div>
-        <span class="cm-small">${esc(x.town)} · ${esc(x.when)} · ${esc(x.hours)}</span>
-        <p class="pl-q">"${esc(x.quote)}"</p></div>
-    </article>`;
   }
 
   // P3: Join our caregiver list. Wording approved by Samantha 2026-10-16.
