@@ -11,13 +11,16 @@ export const DAY_LABEL = { mon: 'Mon', tue: 'Tue', wed: 'Wed', thu: 'Thu', fri: 
 export const PARTS = ['am', 'pm', 'eve', 'night'];
 export const PART_LABEL = { am: 'Mornings', pm: 'Afternoons', eve: 'Evenings', night: 'Overnights' };
 
+// CDS tasks only (MO HealthNet Personal Care Provider Manual 08-10-2026, sections
+// 2.1 and 2.8; Samantha's "Yes, use it" 2026-11-25). CDS pays for hands-on help,
+// never companionship, stand-by, reminders or cueing, or waiting at appointments,
+// so those choices were removed. CDS (not agency care) covers rides for essential
+// shopping, errands, school or work.
 export const HELP_TYPES = {
   personal_care: 'Bathing, dressing and personal care',
-  meals_housekeeping: 'Meals and light housekeeping',
+  meals_housekeeping: 'Meals, their laundry and light housekeeping',
   mobility_transfers: 'Getting around and transfers',
-  memory_care: 'Memory loss and dementia',
-  companionship: 'Companionship',
-  errands: 'Errands and appointments',
+  errands: 'Rides for shopping and errands',
 };
 
 // The 27 counties Caring Companions CDS serves (caringcds.com/service-area, checked 2026-10-16).
@@ -34,12 +37,15 @@ export const RELATIONSHIPS = { self: 'Myself', parent: 'My parent', spouse: 'My 
 // Status 7 checks. A Hub setting can replace this list; this is the default.
 export const DEFAULT_REQUIRED_CHECKS = [
   { key: 'edl', label: 'DHSS Employee Disqualification List (EDL)', source: 'fcsr' },
-  { key: 'edr', label: 'DMH Employee Disqualification Registry', source: 'fcsr' },
+  // 'edr' (DMH Employee Disqualification Registry) removed 2026-11-18, her word: "we dont serve DMH clients".
   { key: 'oig', label: 'Federal OIG exclusion list', source: 'search' },
-  { key: 'mo_medicaid', label: 'Missouri Medicaid exclusion check', source: 'search' },
+  // 'mo_medicaid' (Missouri Medicaid exclusion) removed 2026-11-18, her word: "take of Missouri Medicaid exclusion".
   { key: 'age18', label: 'Age 18 or older', source: 'dob' },
   { key: 'id_match', label: 'Identity matches the screening', source: 'office' },
 ];
+// 2026-11-04 (her rule): a fingerprint background check, only for an attendant whose Step 1 says they have not
+// lived only in Missouri the last 5 years (packet answer mo_only 'more'). Added per person, never to the list above.
+export const FINGERPRINT_CHECK = { key: 'fingerprints', label: 'Fingerprint background check (lived outside Missouri)', source: 'office' };
 
 export const SCREENING_STEPS = [
   { n: 1, key: 'reg_needed', label: 'FCSR registration needed' },
@@ -72,15 +78,18 @@ export function screeningSummary(scr, checks, required = DEFAULT_REQUIRED_CHECKS
     // newest record per check wins
     if (!byKey[c.check_key] || String(c.recorded_at) > String(byKey[c.check_key].recorded_at)) byKey[c.check_key] = c;
   }
-  const findings = scr.screen_result === 'findings';
+  // A finding the office reviewed as clear (not on the list, or waiver approved) no longer blocks (2026-10-23).
+  const review = scr.finding_review || null;
+  const cleared = review === 'cleared_no_waiver' || review === 'cleared_waiver';
+  const findings = scr.screen_result === 'findings' && !cleared;
   const checkRows = required.map(r => {
     const c = byKey[r.key];
     return { key: r.key, label: r.label, result: c ? c.result : null, clear: !!c && c.result === 'clear',
-      at: c ? c.checked_on : null, by: c ? c.recorded_by : null, proof: c ? c.proof_media_id : null };
+      at: c ? c.checked_on : null, by: c ? c.recorded_by : null, proof: c ? c.proof_media_id : null, recorded_at: c ? c.recorded_at : null };
   });
   const checksClear = checkRows.every(c => c.clear);
   const registered = !!scr.reg_verified_at;
-  const screened = !!scr.screen_result_at && scr.screen_result === 'no_findings';
+  const screened = !!scr.screen_result_at && (scr.screen_result === 'no_findings' || cleared);
   const eligible = registered && screened && checksClear && !findings;
   const steps = [
     { ...SCREENING_STEPS[0], done: !!scr.reg_needed_at || registered, at: scr.reg_needed_at, by: scr.reg_needed_source,
@@ -100,9 +109,9 @@ export function screeningSummary(scr, checks, required = DEFAULT_REQUIRED_CHECKS
   const missing = [];
   if (!registered) missing.push('Registration verified');
   if (!scr.screen_result_at) missing.push('FCSR screening result');
-  else if (findings) missing.push('FCSR findings need owner review');
+  else if (findings) missing.push({ gcw_needed: 'Waiting on a Good Cause Waiver', edl: 'On the EDL: cannot work in CDS', not_moving: 'Not moving forward' }[review] || 'FCSR findings need owner review');
   for (const c of checkRows) if (!c.clear) missing.push(c.label);
-  return { steps, eligible, findings, registered, screened, missing,
+  return { steps, eligible, findings, review, registered, screened, missing,
     current: eligible ? 8 : (steps.slice(0, 7).filter(s => s.done).map(s => s.n).pop() || 0) };
 }
 
@@ -178,7 +187,7 @@ export function matchCaregiver(p, f) {
     if (!['sat', 'sun'].some(d => (av[d] || []).length)) return null;
     reasons.push('Available weekends');
   }
-  for (const h of f.help || []) {
+  for (const h of (f.help || []).filter(x => HELP_TYPES[x])) {
     if (!(p.help_types || []).includes(h)) return null;
     reasons.push('Comfortable with ' + HELP_TYPES[h].toLowerCase());
   }

@@ -392,3 +392,13 @@
 .pl-scenes figure{margin:0;display:grid;gap:8px}
 .pl-scenes img{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:16px;display:block;box-shadow:var(--shadow)}
 .pl-scenes figcaption{font-size:.92rem;color:var(--ink-soft)}
+
+/* Official CDS task list (state Personal Care Provider Manual 08-10-2026), 2026-11-25 */
+.pl-tasks{margin-top:22px}
+.pl-tasks h3{margin:0 0 4px;color:var(--navy)}
+.pl-tasklist{list-style:none;margin:12px 0;padding:0;display:grid;gap:8px}
+@media (min-width:760px){.pl-tasklist{grid-template-columns:1fr 1fr;column-gap:24px}}
+.pl-tasklist li{display:flex;gap:8px;align-items:flex-start;line-height:1.4}
+.pl-tasklist .icon{flex:none;margin-top:3px;color:var(--teal-deep);stroke-width:2.6}
+.pl-jobdetails{margin-top:12px}
+.pl-jobdetails summary{cursor:pointer;font-weight:700;color:var(--navy)}

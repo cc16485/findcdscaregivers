@@ -63,6 +63,22 @@ export function mountPublic(el, opts = {}) {
           <li><b>Medicaid pays for the hours.</b><span>The state decides how many hours you can have. You don't pay the caregiver out of pocket.</span></li>
           <li><b>We handle the paperwork.</b><span>Caring Companions CDS runs payroll and taxes for your caregiver and helps with the program forms.</span></li>
         </ul>
+        <div class="cm-card pl-tasks">
+          <h3>What a CDS caregiver helps with</h3>
+          <p class="cm-sub">Hands-on help at home, from the state's list of CDS personal care tasks:</p>
+          <ul class="pl-tasklist">
+            <li>${ICON.check} Bathing and showering</li>
+            <li>${ICON.check} Dressing and grooming: hair, teeth, shaving and nails</li>
+            <li>${ICON.check} Using the bathroom and incontinence care</li>
+            <li>${ICON.check} Cooking meals, help eating, and cleanup</li>
+            <li>${ICON.check} Getting around the house, in and out of bed or a chair</li>
+            <li>${ICON.check} Help taking their own medicine, like opening bottles</li>
+            <li>${ICON.check} Making the bed, changing sheets and their laundry</li>
+            <li>${ICON.check} Shopping for what they need</li>
+            <li>${ICON.check} Rides for essential shopping, errands, school or work</li>
+          </ul>
+          <p class="cm-small"><b>Not part of CDS:</b> standing by or reminders only, waiting at appointments, nursing care, and housework for the rest of the household. The state decides which of these tasks and how many hours each person gets.</p>
+        </div>
       </div></section>
 
       <section class="pl-sec"><div class="pl-in">
@@ -74,7 +90,7 @@ export function mountPublic(el, opts = {}) {
         </ol>
         <div class="pl-scenes">
           <figure><img src="assets/scenes/porch.jpg" alt="A young caregiver steadying an older man with a cane on his porch steps" width="1200" height="800" loading="lazy"><figcaption>A steady arm on the porch steps</figcaption></figure>
-          <figure><img src="assets/scenes/album.jpg" alt="A caregiver and an older woman in a wheelchair looking through a photo album" width="1200" height="800" loading="lazy"><figcaption>Company, conversation and good days at home</figcaption></figure>
+          <figure><img src="assets/scenes/album.jpg" alt="A caregiver and an older woman in a wheelchair looking through a photo album" width="1200" height="800" loading="lazy"><figcaption>Help at home with the everyday things</figcaption></figure>
         </div>
         <div class="cm-card pl-countcard" id="countcard" hidden>
           <h3>Caregivers ready to meet families now</h3>
@@ -193,7 +209,21 @@ export function mountPublic(el, opts = {}) {
         <p class="cm-sub" style="margin-top:10px">It takes about a minute. Then you'll build your profile, and you can stop and come back any time. It doesn't commit you to anything, and you can say no to any family.</p>
       </div>
       <div class="cm-card tint" id="jpay"><div><strong style="font-size:1.5rem;color:var(--navy)">$15 to $16 per hour</strong></div><p class="cm-small" style="margin:0">Paid weekly, every Thursday, by direct deposit or pay card.</p></div>
-      <div class="cm-card flat" id="jhow"><p style="margin:0"><strong>How CDS works:</strong> the family is your employer. They choose, hire and supervise you. Caring Companions CDS handles payroll, taxes and the program paperwork, and we help with introductions.</p></div>
+      <div class="cm-card flat" id="jhow"><p style="margin:0"><strong>How CDS works:</strong> the family is your employer. They choose, hire and supervise you. Caring Companions CDS handles payroll, taxes and the program paperwork, and we help with introductions.</p>
+        <details class="pl-jobdetails"><summary>What the job involves</summary>
+          <ul class="pl-tasklist">
+            <li>${ICON.check} Bathing and showering</li>
+            <li>${ICON.check} Dressing and grooming: hair, teeth, shaving and nails</li>
+            <li>${ICON.check} Using the bathroom and incontinence care</li>
+            <li>${ICON.check} Cooking meals, help eating, and cleanup</li>
+            <li>${ICON.check} Getting around the house, in and out of bed or a chair</li>
+            <li>${ICON.check} Help taking their own medicine, like opening bottles</li>
+            <li>${ICON.check} Making the bed, changing sheets and their laundry</li>
+            <li>${ICON.check} Shopping for what they need</li>
+            <li>${ICON.check} Rides for essential shopping, errands, school or work</li>
+          </ul>
+          <p class="cm-small" style="margin:0">Hands-on help only. CDS doesn't pay for standing by, reminders only, waiting at appointments, or nursing care.</p>
+        </details></div>
       <form id="jf" class="cm-card" novalidate>
         <h2>About you</h2>
         <div class="cm-grid2">
