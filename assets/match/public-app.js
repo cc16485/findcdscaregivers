@@ -293,8 +293,11 @@ export function mountPublic(el, opts = {}) {
         if (v.email) $('#jem', el).value = v.email;
         if (v.city) $('#jci', el).value = v.city;
         if (v.first_name) {
-          $('#jh1', el).textContent = 'Welcome back, ' + v.first_name;
-          $('#jwelcome', el).textContent = 'Thank you for the care you gave with Caring Companions. We\'ve already filled in what we have for you.';
+          // People who applied but were never hired get a greeting that fits them (2026-11-25).
+          $('#jh1', el).textContent = (v.never_hired ? 'Hi, ' : 'Welcome back, ') + v.first_name;
+          $('#jwelcome', el).textContent = v.never_hired
+            ? 'Thanks for your interest in Caring Companions. We\'ve already filled in what we have for you.'
+            : 'Thank you for the care you gave with Caring Companions. We\'ve already filled in what we have for you.';
           $('#jwelcome', el).hidden = false;
         }
         if (v.phone_hint) {
