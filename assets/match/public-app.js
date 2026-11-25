@@ -205,11 +205,18 @@ export function mountPublic(el, opts = {}) {
       <div id="jtop">
         <h1 id="jh1">Join our caregiver list</h1>
         <p class="cm-sub" id="jwelcome" style="margin-bottom:10px;font-weight:600" hidden></p>
-        <p class="cm-sub" id="jintro">Families across Southwest Missouri use the Consumer Directed Services (CDS) program to hire their own caregiver: full time, part time, or someone to fill in. Join our list and we'll help families near you meet you.</p>
+        <p class="cm-sub" id="jintro">Caring Companions has a new program: Missouri's Consumer Directed Services (CDS) program. In CDS, Medicaid pays for care at home, and the family chooses their own caregiver. We're building a directory of caregivers so families near you can find you.</p>
         <p class="cm-sub" style="margin-top:10px">It takes about a minute. Then you'll build your profile, and you can stop and come back any time. It doesn't commit you to anything, and you can say no to any family.</p>
       </div>
       <div class="cm-card tint" id="jpay"><div><strong style="font-size:1.5rem;color:var(--navy)">$15 to $16 per hour</strong></div><p class="cm-small" style="margin:0">Paid weekly, every Thursday, by direct deposit or pay card.</p></div>
-      <div class="cm-card flat" id="jhow"><p style="margin:0"><strong>How CDS works:</strong> the family is your employer. They choose, hire and supervise you. Caring Companions CDS handles payroll, taxes and the program paperwork, and we help with introductions.</p>
+      <div class="cm-card flat" id="jhow"><h2 style="margin:0">How the caregiver directory works</h2>
+        <ol style="margin:0;padding-left:1.3em;display:grid;gap:6px">
+          <li>You make a short profile: a photo, a few words about you, and the days you can work.</li>
+          <li>Families near you who need care look through the directory and find you.</li>
+          <li>When a family would like to meet you, they ask in the directory and we text you. You say yes or no.</li>
+          <li>If it's a fit, the family hires you. The family is your employer, and Caring Companions CDS handles payroll, taxes and the paperwork.</li>
+        </ol>
+        <p class="cm-small" style="margin:0">Your last name, phone number and address stay private. <a href="/" target="_blank" rel="noopener">See the directory families use</a></p>
         <details class="pl-jobdetails"><summary>What the job involves</summary>
           <ul class="pl-tasklist">
             <li>${ICON.check} Bathing and showering</li>
