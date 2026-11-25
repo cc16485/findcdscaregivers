@@ -6,6 +6,12 @@ import { esc, $, $$, act, ICON } from './ui.js';
 import { COUNTIES, PROGRAMS, RELATIONSHIPS } from './shared/rules.js';
 import { PROVIDER_CHOICE, FCSR_EXPLAINER } from './shared/messages.js';
 
+// Top-of-page Call and Text buttons (her ask 11-25: "easy click to call and click to text").
+// 417-218-2888 is the CDS line and takes texts.
+const PH_ICON = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>';
+const TX_ICON = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
+const TOP_CALL = `<div class="pl-top-call"><div class="pl-top-btns"><a class="pl-tc" href="tel:+14172182888" aria-label="Call 417-218-2888">${PH_ICON}<span>Call</span></a><a class="pl-tc" href="sms:+14172182888" aria-label="Text 417-218-2888">${TX_ICON}<span>Text</span></a></div><small><a href="tel:+14172182888">417-218-2888</a> · toll free <a href="tel:+18668635151">866-863-5151</a></small></div>`;
+
 export function mountPublic(el, opts = {}) {
   el.classList.add('cm');
   const view = opts.view || 'landing';
@@ -15,7 +21,7 @@ export function mountPublic(el, opts = {}) {
     el.innerHTML = `<div class="pl">
       <header class="pl-top"><div class="pl-in pl-top-in">
         <img src="${esc(opts.logo || 'assets/logo.png')}" alt="Caring Companions Consumer Directed Services" class="pl-logo" width="770" height="206">
-        <span class="pl-top-call">Call <b>417-218-2888</b><small>Toll free 866-863-5151</small></span>
+        ${TOP_CALL}
       </div></header>
       <section class="pl-hero"><div class="pl-in pl-hero-grid">
         <div class="pl-hero-text">
@@ -199,7 +205,7 @@ export function mountPublic(el, opts = {}) {
     const chips = (id, items) => `<div class="cm-chips" id="${id}">${items.map(c => `<button type="button" class="cm-chip" data-v="${esc(c)}" aria-pressed="false">${esc(c)}</button>`).join('')}</div>`;
     el.innerHTML = `<header class="pl-top"><div class="pl-in pl-top-in">
         <img src="${esc(opts.logo || 'assets/logo.png')}" alt="Caring Companions Consumer Directed Services" class="pl-logo" width="770" height="206">
-        <span class="pl-top-call">Call <b>417-218-2888</b><small>Toll free 866-863-5151</small></span>
+        ${TOP_CALL}
       </div></header><div class="cm-app">
       ${opts.onNavigate ? `<button class="cm-back" id="back">${ICON.back} Back</button>` : ''}
       <div id="jtop">
