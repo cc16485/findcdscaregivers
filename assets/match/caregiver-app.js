@@ -181,7 +181,7 @@ export function mountCaregiver(el, opts = {}) {
       <div class="cm-card flat"><b style="color:var(--navy)">Tips for a great photo</b>
         <ul class="cg-tips"><li>${ICON.check} Face a window for soft, natural light</li><li>${ICON.check} Just you, from the shoulders up</li><li>${ICON.check} A real smile, no sunglasses or filters</li><li>${ICON.check} A plain or tidy background</li></ul></div>
       <label class="cm-btn block" for="pf">${d.photo_url ? 'Choose a different photo' : 'Choose or take a photo'}</label>
-      <input id="pf" type="file" accept="image/*" capture="user" hidden>
+      <input id="pf" type="file" accept="image/*" hidden>
     </div>`;
     wireBack(v);
     $('#pf', v).onchange = async e => {
@@ -215,11 +215,11 @@ export function mountCaregiver(el, opts = {}) {
           <button class="cm-btn ghost" id="retake" hidden>Retake</button>
           <button class="cm-btn" id="keep" hidden>Use this video</button>
         </div>
-        <label class="cm-btn quiet" for="vf2" style="color:#9fe3dd;justify-content:flex-start;padding-left:0">Or upload a video from your phone</label><input id="vf2" type="file" accept="video/*" capture="user" hidden>
+        <label class="cm-btn quiet" for="vf2" style="color:#9fe3dd;justify-content:flex-start;padding-left:0">Or upload a video from your phone</label><input id="vf2" type="file" accept="video/*" hidden>
       </div>
       <div class="cm-card flat" id="fallback" hidden>
         <p class="cm-sub" id="fbmsg">Recording here isn't available on this device. You can record with your phone's camera instead and upload it.</p>
-        <label class="cm-btn ghost block" for="vf">Upload a video</label><input id="vf" type="file" accept="video/*" capture="user" hidden>
+        <label class="cm-btn ghost block" for="vf">Upload a video</label><input id="vf" type="file" accept="video/*" hidden>
         ${MODE === 'practice' ? `<button class="cm-btn quiet" id="stand">Practice: use a stand-in video</button>` : ''}
       </div>
       ${!d.consents.video ? `<label class="cm-check"><input type="checkbox" id="vc"> ${esc(d.consent_wording.video.text)}</label>` : `<p class="cm-small">${ICON.check} You agreed to show your video. You can remove it any time.</p>`}
