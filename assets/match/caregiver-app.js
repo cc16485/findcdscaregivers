@@ -325,6 +325,8 @@ export function mountCaregiver(el, opts = {}) {
         <label class="cm-check"><input type="checkbox" id="pc" ${d.consents.profile ? 'checked disabled' : ''}> ${esc(d.consent_wording.profile.text)}</label>
         ${d.consent_wording.contact && d.contact_preview ? `<label class="cm-check"><input type="checkbox" id="cc" ${d.consents.contact ? 'checked' : ''}> <span><b>Let families contact me directly.</b> ${esc(d.consent_wording.contact.text)}</span></label>
         <p class="cm-small" style="margin:0">${d.consents.contact ? 'Families see your number and email. Uncheck any time to stop.' : 'If you leave this off, families ask through our office and we text you.'}</p>` : ''}
+        ${d.consent_wording.public ? `<label class="cm-check"><input type="checkbox" id="pubc" ${d.consents.public ? 'checked' : ''}> <span><b>Also show my profile on the public page.</b> ${esc(d.consent_wording.public.text)}</span></label>
+        <p class="cm-small" style="margin:0">${d.consents.public ? 'Anyone can see your profile. Your phone and email stay covered. Uncheck any time to stop.' : 'Optional. If you leave this off, only families with Caring Companions CDS can see your profile.'}</p>` : ''}
         <button class="cm-btn block" id="submit" ${d.review_status === 'approved' ? 'disabled' : ''}>${d.review_status === 'submitted' ? 'Sent for review' : d.review_status === 'approved' ? (d.listing_text.includes('complete') ? 'Approved. Families can see this.' : 'Approved. Families see it once your screening is complete.') : 'Send to our office for review'}</button>
       </div>
       <div class="cm-card flat">
@@ -343,6 +345,13 @@ export function mountCaregiver(el, opts = {}) {
       try { await act(null, () => call(on ? 'giveConsent' : 'withdrawConsent', { kind: 'contact' }), on ? 'Families can now call, text or email you.' : 'Your phone and email are hidden again.'); }
       catch (err) { box.checked = !on; box.disabled = false; return; }
       d.consents.contact = on; go('consent');
+    };
+    if ($('#pubc', v)) $('#pubc', v).onchange = async e => {
+      const box = e.currentTarget, on = box.checked;
+      box.disabled = true;
+      try { await act(null, () => call(on ? 'giveConsent' : 'withdrawConsent', { kind: 'public' }), on ? 'Your profile can show on the public page.' : 'Your profile is off the public page.'); }
+      catch (err) { box.checked = !on; box.disabled = false; return; }
+      d.consents.public = on; go('consent');
     };
     $('#submit', v).onclick = async e => {
       await act(e.currentTarget, async () => { if (!d.consents.profile) { if (!$('#pc', v).checked) throw new Error('Please check the box to agree to be listed.'); await call('giveConsent', { kind: 'profile' }); } await call('submitForReview'); }, 'Sent! Our office will review it soon.');
